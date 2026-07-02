@@ -1,0 +1,482 @@
+{
+  "schemaVersion": "1.0",
+  "contentVersion": "0.3.0",
+  "initialState": {
+    "schemaVersion": "1.0",
+    "gameId": "dm-mvp-001",
+    "mode": "exploration-demo",
+    "currentRoomId": "R01",
+    "objective": {
+      "title": "Recover the Dawn Key",
+      "playerText": "Find the sealed reliquary beneath the old watch-fort and recover the Dawn Key before the dungeon fully wakes.",
+      "requiredClueIds": [
+        "C02",
+        "C05",
+        "C08"
+      ],
+      "complete": false
+    },
+    "threat": {
+      "value": 0,
+      "max": 10,
+      "events": []
+    },
+    "player": {
+      "inventory": [],
+      "clues": [],
+      "visitedRooms": [
+        "R01"
+      ],
+      "defeatedMonsters": [],
+      "searchedRooms": [],
+      "lootedRooms": []
+    },
+    "log": [
+      "You step into the sunken stairwell. The dungeon exhales cold dust."
+    ],
+    "rooms": {
+      "R01": {
+        "id": "R01",
+        "name": "Sunken Stairwell",
+        "map": [
+          2,
+          4
+        ],
+        "imageType": "stairs",
+        "visited": true,
+        "playerVisible": {
+          "description": "Broken steps descend into greenish gloom. Old spearheads jut from the walls like rusted teeth. A draft carries the smell of wet stone and extinguished candles.",
+          "features": [
+            "collapsed stairs",
+            "rusted spearheads",
+            "north archway"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Opening room. Establish objective tone. No hidden content to reveal yet."
+        },
+        "exits": [
+          {
+            "dir": "North",
+            "to": "R02"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C01",
+          "text": "You find a chalk mark: three short lines beneath a rising sun."
+        },
+        "loot": [],
+        "monster": null,
+        "threatOnEnter": 0
+      },
+      "R02": {
+        "id": "R02",
+        "name": "Hall of Split Shields",
+        "map": [
+          2,
+          3
+        ],
+        "imageType": "statues",
+        "playerVisible": {
+          "description": "Two cracked shield statues face each other across a narrow hall. Their bronze faces have been scratched away. The floor is marked by dragged footprints heading east and west.",
+          "features": [
+            "twin shield statues",
+            "east passage",
+            "west passage",
+            "drag marks"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Central branching hub. C02 helps identify final seal sequence."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R01"
+          },
+          {
+            "dir": "East",
+            "to": "R03"
+          },
+          {
+            "dir": "West",
+            "to": "R04"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C02",
+          "text": "Behind one shield is an inscription: 'The first seal opens to the hand that refuses greed.'"
+        },
+        "loot": [
+          {
+            "id": "L01",
+            "name": "Brass Torchcap",
+            "text": "A brass cap that lets a torch burn in damp air."
+          }
+        ],
+        "monster": null,
+        "threatOnEnter": 1
+      },
+      "R03": {
+        "id": "R03",
+        "name": "Flooded Guardroom",
+        "map": [
+          3,
+          3
+        ],
+        "imageType": "water",
+        "playerVisible": {
+          "description": "Ankle-deep water covers a ruined guardroom. A drowned weapon rack leans against the far wall. Something pale moves beneath the surface, then stops.",
+          "features": [
+            "flooded floor",
+            "weapon rack",
+            "northern door"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Monster gate. Search can reveal safe footing."
+        },
+        "exits": [
+          {
+            "dir": "West",
+            "to": "R02"
+          },
+          {
+            "dir": "North",
+            "to": "R05"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C03",
+          "text": "You spot darker stones forming a safe path through the water."
+        },
+        "loot": [
+          {
+            "id": "L02",
+            "name": "Old Guard Token",
+            "text": "A corroded token stamped with a sunburst."
+          }
+        ],
+        "monster": {
+          "id": "M01",
+          "name": "Pale Water Ghoul",
+          "defeated": false,
+          "playerText": "A pale ghoul rises from the water, more annoyance than tactical masterpiece."
+        },
+        "threatOnEnter": 1
+      },
+      "R04": {
+        "id": "R04",
+        "name": "Candle Archive",
+        "map": [
+          1,
+          3
+        ],
+        "imageType": "library",
+        "playerVisible": {
+          "description": "Shelves of wax tablets sag beneath centuries of dust. Hundreds of black candles sit unlit in wall niches. One candle still smokes.",
+          "features": [
+            "wax tablets",
+            "black candles",
+            "smoking niche",
+            "north exit"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Lore and clue room. C04 points to reliquary."
+        },
+        "exits": [
+          {
+            "dir": "East",
+            "to": "R02"
+          },
+          {
+            "dir": "North",
+            "to": "R06"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C04",
+          "text": "A tablet says the Dawn Key was sealed where the blind sun looks down."
+        },
+        "loot": [],
+        "monster": null,
+        "threatOnEnter": 0
+      },
+      "R05": {
+        "id": "R05",
+        "name": "The Greedy Font",
+        "map": [
+          3,
+          2
+        ],
+        "imageType": "fountain",
+        "playerVisible": {
+          "description": "A dry marble font stands beneath a golden handprint. Coins glitter inside the basin, though none look freshly dropped.",
+          "features": [
+            "dry font",
+            "golden handprint",
+            "coin-filled basin",
+            "east crawlway"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Player should infer not to take coins. Loot action increases threat."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R03"
+          },
+          {
+            "dir": "East",
+            "to": "R07"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C05",
+          "text": "Scratched around the basin: 'Leave tribute untouched; take only what was lost.'"
+        },
+        "loot": [
+          {
+            "id": "L03",
+            "name": "Silver Reliquary Pin",
+            "text": "A small pin shaped like a closed eye."
+          }
+        ],
+        "monster": null,
+        "threatOnEnter": 1,
+        "threatOnLoot": 1
+      },
+      "R06": {
+        "id": "R06",
+        "name": "Blind Sun Chapel",
+        "map": [
+          1,
+          2
+        ],
+        "imageType": "chapel",
+        "playerVisible": {
+          "description": "A stone sun hangs above an altar, but its centre has been gouged into a hollow eye. Faded kneeling cushions form a path north.",
+          "features": [
+            "blind sun icon",
+            "altar",
+            "kneeling cushions",
+            "north door"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "C06 reveals final room direction. Optional loot."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R04"
+          },
+          {
+            "dir": "North",
+            "to": "R08"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C06",
+          "text": "The altar groove points toward a hidden lower chamber beyond the north door."
+        },
+        "loot": [
+          {
+            "id": "L04",
+            "name": "Dawn-thread Cord",
+            "text": "A warm cord woven with gold fibre."
+          }
+        ],
+        "monster": null,
+        "threatOnEnter": 1
+      },
+      "R07": {
+        "id": "R07",
+        "name": "Collapsed Scribe Cells",
+        "map": [
+          4,
+          2
+        ],
+        "imageType": "cells",
+        "playerVisible": {
+          "description": "Three tiny cells crumble into each other. Ink-stained bones clutch slate boards. The ceiling sags like it is considering career options.",
+          "features": [
+            "scribe cells",
+            "slate boards",
+            "unstable ceiling",
+            "north tunnel"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Threat room. Search gives clue, but also noise."
+        },
+        "exits": [
+          {
+            "dir": "West",
+            "to": "R05"
+          },
+          {
+            "dir": "North",
+            "to": "R09"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C07",
+          "text": "One slate repeats: 'When the watcher wakes, the final door remembers every footstep.'"
+        },
+        "loot": [],
+        "monster": null,
+        "threatOnEnter": 1,
+        "threatOnSearch": 1
+      },
+      "R08": {
+        "id": "R08",
+        "name": "Mirror of Refused Greed",
+        "map": [
+          1,
+          1
+        ],
+        "imageType": "mirror",
+        "playerVisible": {
+          "description": "A tall black mirror reflects the room without reflecting you. Three empty hooks hang beside it. The glass shows a closed door somewhere deeper below.",
+          "features": [
+            "black mirror",
+            "empty hooks",
+            "reflected sealed door",
+            "east bridge"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "C08 is required. Mirror clue helps final seal."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R06"
+          },
+          {
+            "dir": "East",
+            "to": "R09"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C08",
+          "text": "The mirror writes in frost: 'Empty hands. Open eye. Dawn thread.'"
+        },
+        "loot": [],
+        "monster": null,
+        "threatOnEnter": 0
+      },
+      "R09": {
+        "id": "R09",
+        "name": "Watcher Bridge",
+        "map": [
+          3,
+          1
+        ],
+        "imageType": "bridge",
+        "playerVisible": {
+          "description": "A narrow stone bridge crosses a black shaft. Far below, something enormous turns in its sleep. A sealed bronze door waits to the north.",
+          "features": [
+            "stone bridge",
+            "black shaft",
+            "bronze north door"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Final gate. Can enter finale regardless, but warning if clues missing."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R07"
+          },
+          {
+            "dir": "West",
+            "to": "R08"
+          },
+          {
+            "dir": "North",
+            "to": "R10"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C09",
+          "text": "You find three shallow slots in the bridge rail: hand, eye, thread."
+        },
+        "loot": [],
+        "monster": {
+          "id": "M02",
+          "name": "Bronze Door Warden",
+          "defeated": false,
+          "playerText": "A bronze warden unfolds from the doorway, blocking the way with ceremonial stubbornness."
+        },
+        "threatOnEnter": 1
+      },
+      "R10": {
+        "id": "R10",
+        "name": "Reliquary of the Dawn Key",
+        "map": [
+          3,
+          0
+        ],
+        "imageType": "reliquary",
+        "finale": true,
+        "playerVisible": {
+          "description": "A circular chamber glows with trapped sunrise. The Dawn Key floats inside a glass reliquary, bound by three bands: hand, eye, and thread.",
+          "features": [
+            "glass reliquary",
+            "floating Dawn Key",
+            "three sealing bands"
+          ]
+        },
+        "hidden": {
+          "dmNotes": "Finale. Complete objective if C02, C05, C08 discovered or allow risky completion otherwise."
+        },
+        "exits": [
+          {
+            "dir": "South",
+            "to": "R09"
+          }
+        ],
+        "search": {
+          "done": false,
+          "clueId": "C10",
+          "text": "The bands loosen as your gathered clues align: refuse greed, open the blind eye, bind with dawn-thread."
+        },
+        "loot": [
+          {
+            "id": "L05",
+            "name": "Dawn Key",
+            "text": "The recovered objective. It hums like sunrise in a bottle."
+          }
+        ],
+        "monster": null,
+        "threatOnEnter": 2
+      }
+    }
+  },
+  "clueBook": {
+    "C01": "Three chalk lines beneath a rising sun.",
+    "C02": "First seal: refuse greed.",
+    "C03": "Dark stones mark safe footing.",
+    "C04": "The Dawn Key lies where the blind sun looks down.",
+    "C05": "Leave tribute untouched; take only what was lost.",
+    "C06": "The altar points to a lower chamber.",
+    "C07": "The final door remembers every footstep.",
+    "C08": "Empty hands. Open eye. Dawn thread.",
+    "C09": "Slots in the bridge: hand, eye, thread.",
+    "C10": "The final bands answer to the gathered clues."
+  }
+}

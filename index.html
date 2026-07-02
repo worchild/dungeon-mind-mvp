@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dungeon Mind v0.3.0 - Engine Foundation</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Dungeon Mind v0.3.0</h1>
+    <div class="subtitle">Engine Foundation · modular rules · JSON dungeon · validator protected</div>
+  </header>
+
+  <main>
+    <section class="card" id="roomPanel"></section>
+
+    <aside class="side">
+      <div class="card">
+        <h3>Objective</h3>
+        <div id="objective"></div>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <h3>Threat Meter</h3>
+        <div class="meter"><div class="meter-fill" id="threatFill"></div></div>
+        <p class="small" id="threatText"></p>
+      </div>
+      <div class="grid" style="margin-top:14px;">
+        <div class="card">
+          <h3>Inventory</h3>
+          <ul id="inventory"></ul>
+        </div>
+        <div class="card">
+          <h3>Clues</h3>
+          <ul id="clues"></ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <h3>Map</h3>
+        <div id="map" class="map"></div>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <h3>System</h3>
+        <p id="validatorStatus" class="small"></p>
+        <button id="saveBtn">Save</button>
+        <button id="loadBtn">Load</button>
+        <button id="exportBtn">Export JSON</button>
+        <label class="file-label">Import JSON<input id="importFile" type="file" accept="application/json" hidden /></label>
+        <button id="resetBtn" class="danger">Reset</button>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <h3>Log</h3>
+        <div id="log" class="log"></div>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>
