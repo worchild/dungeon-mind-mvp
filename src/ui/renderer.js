@@ -62,15 +62,6 @@ function renderMap() {
   document.getElementById("map").innerHTML = grid.join("");
 }
 
-function isCouncilDebugEnabled() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    localStorage.getItem("dmDebugCouncil") === "true" ||
-    params.get("debugCouncil") === "1" ||
-    params.get("debugCouncil") === "true"
-  );
-}
-
 export function render() {
   const state = getState();
   const clueBook = getClueBook();
@@ -122,15 +113,11 @@ export function render() {
 export function renderCouncilDebug(councilResult) {
   const debugPanel = document.getElementById("debug-panel");
   const debugOutput = document.getElementById("council-debug-output");
-  const debugEnabled = isCouncilDebugEnabled();
 
   if (!debugPanel || !debugOutput) return;
 
-  debugPanel.hidden = !debugEnabled;
-
-  if (debugEnabled) {
-    debugOutput.textContent = councilResult
-      ? JSON.stringify(councilResult, null, 2)
-      : "Council debug is enabled. Take an action to generate the first Council result.";
-  }
+  debugPanel.hidden = false;
+  debugOutput.textContent = councilResult
+    ? JSON.stringify(councilResult, null, 2)
+    : "Internal reasoning is enabled. Take an action to generate the first Director decision and queued intent.";
 }
