@@ -1,7 +1,7 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.6.0";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.6.0";
+import { consultCouncil } from "./council.js?v=0.7.0";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.7.0";
 
 let initialContent = null;
 
