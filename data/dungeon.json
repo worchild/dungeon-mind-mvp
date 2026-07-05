@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "contentVersion": "0.7.2-demo-map-refresh",
+  "contentVersion": "0.8.0-treasure-hunt-explore-mode",
   "initialState": {
     "schemaVersion": "1.0",
     "gameId": "dm-mvp-001-refresh",
@@ -16,6 +16,7 @@
     "player": {
       "inventory": [],
       "clues": [],
+      "insights": [],
       "visitedRooms": ["R01"],
       "defeatedMonsters": [],
       "searchedRooms": [],
@@ -191,15 +192,95 @@
     }
   },
   "clueBook": {
-    "C01": "An open eye beneath a rising sun is scratched behind a loose star-inlay.",
-    "C02": "The first seal opens for empty hands.",
-    "C03": "Dark stones mark a safe path through the moonwater.",
-    "C04": "The Dawn Key sleeps below the blind sun and needs three signs.",
-    "C05": "Leave the tribute. Take only what was entrusted.",
-    "C06": "The open eye remembers dawn.",
-    "C07": "Every step is counted after the watcher stirs.",
-    "C08": "Empty hand. Open eye. Dawn thread.",
-    "C09": "The final door opens either to wisdom or to noise.",
-    "C10": "The reliquary bands answer to empty hand, open eye, dawn thread."
+    "C01": {
+      "title": "Open Eye Mark",
+      "text": "An open eye beneath a rising sun is scratched behind a loose star-inlay.",
+      "importance": "lead",
+      "foundIn": "R01",
+      "pointsTo": ["R06", "R08"],
+      "tags": ["eye", "dawn", "ritual"],
+      "hint": "The eye symbol appears to belong to the Dawn Key ritual."
+    },
+    "C02": {
+      "title": "Empty Hands",
+      "text": "The first seal opens for empty hands.",
+      "importance": "required",
+      "foundIn": "R02",
+      "pointsTo": ["R08", "R10"],
+      "tags": ["seal", "hands", "restraint"],
+      "hint": "This may matter when handling the reliquary."
+    },
+    "C03": {
+      "title": "Dry Stones",
+      "text": "Dark stones mark a safe path through the moonwater.",
+      "importance": "lead",
+      "foundIn": "R03",
+      "pointsTo": ["R04", "R05"],
+      "tags": ["path", "water", "caution"],
+      "hint": "Careful observation can reveal safer ways through dangerous rooms."
+    },
+    "C04": {
+      "title": "Three Signs",
+      "text": "The Dawn Key sleeps below the blind sun and needs three signs.",
+      "importance": "major",
+      "foundIn": "R04",
+      "pointsTo": ["R06", "R10"],
+      "tags": ["dawn", "sun", "ritual", "seal"],
+      "hint": "The finale will likely test a pattern, not just possession of an item."
+    },
+    "C05": {
+      "title": "Leave the Tribute",
+      "text": "Leave the tribute. Take only what was entrusted.",
+      "importance": "required",
+      "foundIn": "R05",
+      "pointsTo": ["R10"],
+      "tags": ["tribute", "restraint", "treasure"],
+      "hint": "Some treasure is a temptation. Some treasure is meant to be carried."
+    },
+    "C06": {
+      "title": "The Eye Remembers",
+      "text": "The open eye remembers dawn.",
+      "importance": "lead",
+      "foundIn": "R06",
+      "pointsTo": ["R08", "R10"],
+      "tags": ["eye", "dawn", "sun"],
+      "hint": "This links the chapel symbol to the mirror and reliquary."
+    },
+    "C07": {
+      "title": "Watcher Counting",
+      "text": "Every step is counted after the watcher stirs.",
+      "importance": "warning",
+      "foundIn": "R07",
+      "pointsTo": ["R09", "R10"],
+      "tags": ["threat", "watcher", "counting"],
+      "hint": "The longer and louder the search, the more awake the dungeon becomes."
+    },
+    "C08": {
+      "title": "Ritual Order",
+      "text": "Empty hand. Open eye. Dawn thread.",
+      "importance": "required",
+      "foundIn": "R08",
+      "pointsTo": ["R10"],
+      "tags": ["hands", "eye", "dawn", "thread", "seal"],
+      "hint": "This looks like the order of the final reliquary signs."
+    },
+    "C09": {
+      "title": "Wisdom or Noise",
+      "text": "The final door opens either to wisdom or to noise.",
+      "importance": "warning",
+      "foundIn": "R09",
+      "pointsTo": ["R10"],
+      "tags": ["finale", "threat", "wisdom"],
+      "hint": "You can force the ending, but the dungeon will notice."
+    },
+    "C10": {
+      "title": "Bands Answer",
+      "text": "The reliquary bands answer to empty hand, open eye, dawn thread.",
+      "importance": "confirmation",
+      "foundIn": "R10",
+      "pointsTo": [],
+      "tags": ["hands", "eye", "dawn", "thread", "seal"],
+      "hint": "The treasure trail has reached the reliquary."
+    }
   }
 }
