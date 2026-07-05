@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dungeon Mind v0.4.2 - Internal Reasoning</title>
-    <link rel="stylesheet" href="style.css?v=0.4.2" />
-    <script type="module" src="./src/app.js?v=0.4.2"></script>
+    <title>Dungeon Mind v0.5.0 - Director Decision Layer</title>
+    <link rel="stylesheet" href="style.css?v=0.5.0" />
+    <script type="module" src="./src/app.js?v=0.5.0"></script>
   </head>
   <body>
     <header>
-      <h1>Dungeon Mind v0.4.2</h1>
+      <h1>Dungeon Mind v0.5.0</h1>
       <div class="subtitle">
-        Internal reasoning build · modular rules · JSON dungeon · validator protected
+        Director decision layer · internal reasoning · action queue · validator protected
       </div>
     </header>
 
@@ -67,8 +67,8 @@
 
       <section id="debug-panel" class="card debug-card">
         <h2>Dungeon Mind — Internal Reasoning</h2>
-        <p class="small">Developer-only reasoning view. Scroll here after player actions to inspect Council recommendations.</p>
-        <pre id="council-debug-output">Internal reasoning panel loaded. Take an action to generate the first Council result.</pre>
+        <p class="small">Developer-only reasoning view. Scroll here after player actions to inspect Council recommendations, Director decisions, and queued future intents.</p>
+        <pre id="council-debug-output">Internal reasoning panel loaded. Take an action to generate the first Director decision.</pre>
       </section>
     </main>
   </body>
