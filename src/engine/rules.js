@@ -1,13 +1,13 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.7.0";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.7.0";
+import { consultCouncil } from "./council.js?v=0.7.1";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.7.1";
 
 let initialContent = null;
 
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json");
+  initialContent = await fetch("./data/dungeon.json?v=0.7.1").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=0.7.1");
   ensureDungeonMindState(getState());
   return getState();
 }
