@@ -233,6 +233,32 @@ footer {
   margin: 0 auto;
   font-size: 0.8rem;
 }
+#debug-panel {
+  grid-column: 1 / -1;
+  border-color: #76b879;
+  background: linear-gradient(180deg, rgba(15, 35, 24, 0.98), rgba(8, 18, 13, 0.98));
+  color: #d7ffe0;
+  max-height: 420px;
+  overflow: auto;
+}
+
+#debug-panel h2 {
+  color: #9ff0b1;
+  margin-bottom: 8px;
+}
+
+#debug-panel pre {
+  white-space: pre-wrap;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(118, 184, 121, 0.45);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 0;
+}
+
+code {
+  color: #fff3d0;
+}
 @media (max-width: 900px) {
   main {
     grid-template-columns: 1fr;
@@ -244,18 +270,4 @@ footer {
   header {
     padding: 14px;
   }
-}
-#debug-panel {
-  margin-top: 1rem;
-  padding: 1rem;
-  border: 1px solid #666;
-  background: #111;
-  color: #9f9;
-  font-size: 0.85rem;
-  max-height: 300px;
-  overflow: auto;
-}
-
-#debug-panel pre {
-  white-space: pre-wrap;
 }
