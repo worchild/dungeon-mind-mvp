@@ -1,4 +1,4 @@
-import { initialiseGame, dispatch } from "./engine/rules.js?v=0.7.0";
+import { initialiseGame, dispatch } from "./engine/rules.js?v=0.7.1";
 import { getState } from "./state/store.js?v=0.7.0";
 import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.7.0";
 
@@ -12,7 +12,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(getState(), null, 2)], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "dungeon-mind-save-v0.7.0.json";
+  link.download = "dungeon-mind-save-v0.7.1.json";
   link.click();
   URL.revokeObjectURL(link.href);
 }
