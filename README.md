@@ -1,4 +1,4 @@
-# Dungeon Mind v0.8.0 – Treasure Hunt Explore Mode
+# Dungeon Mind v0.8.1 – Inspectable Features
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,7 +12,7 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.8.0 Treasure Hunt Explore Mode**
+Current version: **0.8.1 Inspectable Features**
 
 ## Run locally
 
@@ -43,12 +43,13 @@ http://localhost:8000
 - Save/load using browser localStorage
 - Export/import save JSON
 - Player-safe rendering and placeholder image system
-- Dungeon Council internal reasoning model
+- Dungeon Council diagnostics model
 - Dungeon personality profile that biases Council priorities
 - Director action queue for future intent and pacing beats
 - Structured clue metadata for treasure-hunt exploration
 - Clue Journal with clue titles, importance, tags, leads, and destination hints
 - Insight messages when discovered clues connect
+- Inspectable room features that reveal clue, flavour, warning, or threat results
 
 ## Project structure
 
@@ -81,7 +82,7 @@ tests/
 
 ## Explore mode principle
 
-Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain visible features, searches reveal clues, clues point toward other rooms or ritual ideas, and the journal helps the player connect discoveries without leaking hidden Dungeon Mind data.
+Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain visible features, inspectable details reveal clues or flavour, clues point toward other rooms or ritual ideas, and the journal helps the player connect discoveries without leaking hidden Dungeon Mind data.
 
 ## Architecture principle
 
