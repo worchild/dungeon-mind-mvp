@@ -3,21 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dungeon Mind v0.3.0 - Engine Foundation</title>
+    <title>Dungeon Mind v0.4.0 - Dungeon Council Debug</title>
     <link rel="stylesheet" href="style.css" />
     <script type="module" src="./src/app.js"></script>
   </head>
   <body>
     <header>
-      <h1>Dungeon Mind v0.3.0</h1>
+      <h1>Dungeon Mind v0.4.0</h1>
       <div class="subtitle">
-        Engine Foundation · modular rules · JSON dungeon · validator protected
+        Dungeon Council · modular rules · JSON dungeon · validator protected
       </div>
     </header>
 
     <main>
-      <section id="debug-panel" hidden>
+      <section id="debug-panel" class="card debug-card" hidden>
         <h2>Dungeon Council Debug</h2>
+        <p class="small">Visible when <code>dmDebugCouncil</code> is enabled or the URL contains <code>?debugCouncil=1</code>.</p>
         <pre id="council-debug-output"></pre>
       </section>
       <section class="card" id="roomPanel"></section>
