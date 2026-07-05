@@ -66,6 +66,7 @@ export function render() {
   const state = getState();
   const clueBook = getClueBook();
   const room = currentRoom();
+  const lootActionLabel = room.finale ? "Recover Dawn Key" : "Collect Loot";
 
   document.getElementById("roomPanel").innerHTML = `
     <div class="room-title"><div><h2>${escapeHtml(room.name)}</h2><span class="pill">Room ${room.id}${room.finale ? " · Finale" : ""}</span></div><span class="pill">v${APP_VERSION} · Schema ${state.schemaVersion}</span></div>
@@ -76,7 +77,7 @@ export function render() {
     <div class="exits">${room.exits.map((exit) => `<button class="primary" data-action="MOVE" data-room-id="${exit.to}">Go ${escapeHtml(exit.dir)}</button>`).join("")}</div>
     <div class="actions">
       <button data-action="SEARCH" ${room.search?.done ? "disabled" : ""}>Search Room</button>
-      <button class="good" data-action="LOOT" ${!room.loot?.length || state.player.lootedRooms.includes(room.id) ? "disabled" : ""}>Collect Loot</button>
+      <button class="good" data-action="LOOT" ${!room.loot?.length || state.player.lootedRooms.includes(room.id) ? "disabled" : ""}>${lootActionLabel}</button>
       <button class="danger" data-action="DEFEAT_MONSTER" ${!room.monster || room.monster.defeated ? "disabled" : ""}>Defeat Monster</button>
     </div>`;
 
