@@ -4,7 +4,7 @@ Dungeon Mind is a browser-based dungeon exploration engine. The rules engine own
 
 ## Version
 
-Current version: **0.3.0**
+Current version: **0.4.1 debug redeploy trigger**
 
 ## Run
 
