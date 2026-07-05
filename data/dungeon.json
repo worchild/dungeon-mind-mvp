@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "contentVersion": "0.8.0-treasure-hunt-explore-mode",
+  "contentVersion": "0.8.1-inspectable-features",
   "initialState": {
     "schemaVersion": "1.0",
     "gameId": "dm-mvp-001-refresh",
@@ -17,6 +17,7 @@
       "inventory": [],
       "clues": [],
       "insights": [],
+      "inspectedFeatures": [],
       "visitedRooms": ["R01"],
       "defeatedMonsters": [],
       "searchedRooms": [],
@@ -36,6 +37,11 @@
         },
         "hidden": { "dmNotes": "Opening room. Establish the star-fort tone and the sense that the dungeon is waking." },
         "exits": [{ "dir": "North", "to": "R02" }],
+        "inspectables": [
+          { "id": "brass-star-inlays", "label": "brass star inlays", "text": "You pry at the tarnished inlays. One star sits loose, hiding a scratched open eye beneath a rising sun.", "repeatText": "The loose star has already given up its secret: an open eye beneath dawn.", "clueId": "C01" },
+          { "id": "cold-blue-light", "label": "cold blue light", "text": "The blue light is cold but not natural. Dust moves upward through it, like the shaft is breathing in reverse." },
+          { "id": "north-archway", "label": "north archway", "text": "The archway has no door, only old scrape marks where something heavy once sealed the way." }
+        ],
         "search": { "done": false, "clueId": "C01", "text": "Behind a loose star-inlay you find a scratched mark: an open eye beneath a rising sun." },
         "loot": [],
         "monster": null,
@@ -52,6 +58,11 @@
         },
         "hidden": { "dmNotes": "Required clue C02 teaches restraint for the final seal." },
         "exits": [{ "dir": "South", "to": "R01" }, { "dir": "East", "to": "R03" }],
+        "inspectables": [
+          { "id": "listening-shields", "label": "listening shield-statues", "text": "The shield faces tilt toward your hands. One shield bears a fine inscription: 'The first seal opens for empty hands.'", "repeatText": "The shield inscription still reads: 'The first seal opens for empty hands.'", "clueId": "C02" },
+          { "id": "scratched-bronze-faces", "label": "scratched bronze faces", "text": "The scratches are not battle damage. They look like tally marks made by nervous fingers." },
+          { "id": "east-passage", "label": "east passage", "text": "A damp draft moves from the east, carrying the smell of old water and rust." }
+        ],
         "search": { "done": false, "clueId": "C02", "text": "One shield bears a fine inscription: 'The first seal opens for empty hands.'" },
         "loot": [{ "id": "L01", "name": "Star-Bronze Buckle", "text": "A tarnished buckle stamped with a seven-pointed star." }],
         "monster": null,
@@ -68,6 +79,11 @@
         },
         "hidden": { "dmNotes": "First creature encounter. Search reveals safer footing and reinforces careful exploration." },
         "exits": [{ "dir": "West", "to": "R02" }, { "dir": "North", "to": "R04" }, { "dir": "East", "to": "R05" }],
+        "inspectables": [
+          { "id": "silver-floodwater", "label": "silver floodwater", "text": "Beneath the silver surface you notice dark, dry stones. A safe path crosses the room without disturbing the deeper ripples.", "repeatText": "The dry stones still mark the safest route through the moonwater.", "clueId": "C03" },
+          { "id": "drowned-spear-rack", "label": "drowned spear rack", "text": "The drowned spears are brittle with moon-rust. One token hangs from the rack by a blackened cord." },
+          { "id": "east-service-door", "label": "east service door", "text": "The service door is water-stained but often used. Someone went this way carrying tribute." }
+        ],
         "search": { "done": false, "clueId": "C03", "text": "You notice dark, dry stones beneath the water: a safe path crosses the room without disturbing the deeper ripples." },
         "loot": [{ "id": "L02", "name": "Moon-Rusted Guard Token", "text": "A corroded token from the star-fort watch, cold no matter how long you hold it." }],
         "monster": { "id": "M01", "name": "Moon-Drowned Warden", "defeated": false, "playerText": "A drowned warden rises from the silver water, dragging a broken spear and a terrible attitude." },
@@ -84,6 +100,11 @@
         },
         "hidden": { "dmNotes": "Lore room. Points toward the reliquary and the failed watch-fort guardians." },
         "exits": [{ "dir": "South", "to": "R03" }, { "dir": "North", "to": "R06" }],
+        "inspectables": [
+          { "id": "unsent-warnings", "label": "unsent warning scrolls", "text": "One warning reads: 'The Dawn Key sleeps below the blind sun; wake it only with the right three signs.'", "repeatText": "The warning still insists the Dawn Key needs three signs.", "clueId": "C04" },
+          { "id": "wax-tablets", "label": "wax tablets", "text": "The wax tablets contain route notes, all ending with the same word: 'Reliquary.'" },
+          { "id": "black-candle", "label": "smoking black candle", "text": "The candle smokes without flame. Its smoke drifts north, as if drawn toward a chapel." }
+        ],
         "search": { "done": false, "clueId": "C04", "text": "One warning reads: 'The Dawn Key sleeps below the blind sun; wake it only with the right three signs.'" },
         "loot": [],
         "monster": null,
@@ -100,6 +121,11 @@
         },
         "hidden": { "dmNotes": "Required clue C05 teaches not taking tribute. Loot is safe but tempting." },
         "exits": [{ "dir": "West", "to": "R03" }, { "dir": "North", "to": "R07" }],
+        "inspectables": [
+          { "id": "dry-marble-font", "label": "dry marble font", "text": "Scratched under the rim: 'Leave the tribute. Take only what was entrusted.'", "repeatText": "The rim-scratch still warns you to leave tribute alone.", "clueId": "C05" },
+          { "id": "stacked-old-coins", "label": "stacked old coins", "text": "The coin stacks are too neat. Taking from them would feel less like treasure and more like ringing a dinner bell.", "threat": 1 },
+          { "id": "gold-handprint", "label": "gold handprint", "text": "The handprint is not a handle. It is a promise: touch lightly, take carefully." }
+        ],
         "search": { "done": false, "clueId": "C05", "text": "Scratched under the rim: 'Leave the tribute. Take only what was entrusted.'" },
         "loot": [{ "id": "L03", "name": "Keeper's Silver Pin", "text": "A silver pin shaped like a closed eye, found beside the basin rather than inside it." }],
         "monster": null,
@@ -117,6 +143,11 @@
         },
         "hidden": { "dmNotes": "Chapel clue points toward the finale. Optional loot supports the Dawn Key ritual." },
         "exits": [{ "dir": "South", "to": "R04" }, { "dir": "East", "to": "R08" }],
+        "inspectables": [
+          { "id": "cracked-altar", "label": "cracked altar", "text": "A groove in the altar points east. Someone has written beside it: 'The open eye remembers dawn.'", "repeatText": "The altar groove still points east toward the mirror.", "clueId": "C06" },
+          { "id": "blind-sun-icon", "label": "blind sun icon", "text": "The sun's hollow eye has been polished by many worried hands." },
+          { "id": "east-passage", "label": "east passage", "text": "The passage behind the altar is narrow and smooth, worn by ritual processions rather than patrols." }
+        ],
         "search": { "done": false, "clueId": "C06", "text": "A groove in the altar points east. Someone has written beside it: 'The open eye remembers dawn.'" },
         "loot": [{ "id": "L04", "name": "Dawn-Thread Cord", "text": "A warm cord woven with gold fibre and a few strands of something brighter than metal." }],
         "monster": null,
@@ -133,6 +164,11 @@
         },
         "hidden": { "dmNotes": "Threat and lore room. Search makes noise and raises the dungeon's attention." },
         "exits": [{ "dir": "South", "to": "R05" }, { "dir": "North", "to": "R09" }],
+        "inspectables": [
+          { "id": "star-count-slates", "label": "star-count slates", "text": "One slate repeats a final line: 'Every step is counted after the watcher stirs.'", "repeatText": "The slate keeps its grim arithmetic: every step is counted.", "clueId": "C07", "threat": 1 },
+          { "id": "unstable-ceiling", "label": "unstable ceiling", "text": "Pebbles tick down from the cracked ceiling. Quiet feet would be wise here." },
+          { "id": "north-tunnel", "label": "north tunnel", "text": "The north tunnel exhales cold air and a faint echo, like something practising your footsteps ahead of you." }
+        ],
         "search": { "done": false, "clueId": "C07", "text": "One slate repeats a final line: 'Every step is counted after the watcher stirs.'" },
         "loot": [],
         "monster": null,
@@ -150,6 +186,11 @@
         },
         "hidden": { "dmNotes": "Required clue C08. Gives final ritual order in player-facing metaphor." },
         "exits": [{ "dir": "West", "to": "R06" }, { "dir": "East", "to": "R09" }],
+        "inspectables": [
+          { "id": "black-mirror", "label": "black mirror", "text": "Frost letters spread across the mirror: 'Empty hand. Open eye. Dawn thread.'", "repeatText": "The mirror still shows the ritual order, and still refuses to reflect your hands.", "clueId": "C08" },
+          { "id": "missing-reflected-hands", "label": "missing reflected hands", "text": "Your reflection keeps its arms, but your hands vanish entirely. The message is not subtle. Handy, though." },
+          { "id": "three-bronze-hooks", "label": "three bronze hooks", "text": "The hooks are empty. One is hand-shaped, one eye-shaped, and one twists like a sun-thread." }
+        ],
         "search": { "done": false, "clueId": "C08", "text": "Frost letters spread across the mirror: 'Empty hand. Open eye. Dawn thread.'" },
         "loot": [],
         "monster": null,
@@ -166,6 +207,11 @@
         },
         "hidden": { "dmNotes": "Final approach. The player can enter the finale even without all clues, but risk rises." },
         "exits": [{ "dir": "South", "to": "R07" }, { "dir": "West", "to": "R08" }, { "dir": "North", "to": "R10" }],
+        "inspectables": [
+          { "id": "bronze-north-door", "label": "bronze north door", "text": "A warning is carved into the bridge rail beside the door: 'The door opens either to wisdom or to noise.'", "repeatText": "The final warning has not improved with rereading.", "clueId": "C09" },
+          { "id": "bottomless-dark-shaft", "label": "bottomless dark shaft", "text": "The dark below answers every breath with a delayed echo. Something down there is counting, and may have strong opinions about visitors.", "threat": 1 },
+          { "id": "narrow-stone-bridge", "label": "narrow stone bridge", "text": "The bridge stones are worn smooth in the centre, but the edges are chipped by hurried boots." }
+        ],
         "search": { "done": false, "clueId": "C09", "text": "A warning is carved into the bridge rail: 'The door opens either to wisdom or to noise.'" },
         "loot": [],
         "monster": { "id": "M02", "name": "Starved Echo-Thing", "defeated": false, "playerText": "A thin creature made of old echoes crawls up from beneath the bridge. It looks like it has been rehearsing this entrance for centuries." },
@@ -183,6 +229,11 @@
         },
         "hidden": { "dmNotes": "Final room. L05 completes objective. Missing required clues causes noisy completion penalty in rules engine." },
         "exits": [{ "dir": "South", "to": "R09" }],
+        "inspectables": [
+          { "id": "three-bronze-bands", "label": "three bronze bands", "text": "The bronze bands tremble in order: empty hand, open eye, dawn thread. The Dawn Key is ready to be recovered.", "repeatText": "The bronze bands wait in the same order: empty hand, open eye, dawn thread.", "clueId": "C10" },
+          { "id": "blind-sun-ceiling", "label": "blind sun ceiling", "text": "The blind sun overhead warms as your clues gather meaning. It feels less like decoration and more like judgement." },
+          { "id": "glowing-dawn-key", "label": "glowing Dawn Key", "text": "The key glows brighter when you look away, because apparently even sacred relics enjoy being dramatic." }
+        ],
         "search": { "done": false, "clueId": "C10", "text": "The bronze bands tremble in order: empty hand, open eye, dawn thread. The Dawn Key is ready to be recovered." },
         "loot": [{ "id": "L05", "name": "Dawn Key", "text": "You recover the Dawn Key from the opened reliquary. The dungeon hates this development, which is usually a good sign." }],
         "monster": null,
@@ -192,95 +243,15 @@
     }
   },
   "clueBook": {
-    "C01": {
-      "title": "Open Eye Mark",
-      "text": "An open eye beneath a rising sun is scratched behind a loose star-inlay.",
-      "importance": "lead",
-      "foundIn": "R01",
-      "pointsTo": ["R06", "R08"],
-      "tags": ["eye", "dawn", "ritual"],
-      "hint": "The eye symbol appears to belong to the Dawn Key ritual."
-    },
-    "C02": {
-      "title": "Empty Hands",
-      "text": "The first seal opens for empty hands.",
-      "importance": "required",
-      "foundIn": "R02",
-      "pointsTo": ["R08", "R10"],
-      "tags": ["seal", "hands", "restraint"],
-      "hint": "This may matter when handling the reliquary."
-    },
-    "C03": {
-      "title": "Dry Stones",
-      "text": "Dark stones mark a safe path through the moonwater.",
-      "importance": "lead",
-      "foundIn": "R03",
-      "pointsTo": ["R04", "R05"],
-      "tags": ["path", "water", "caution"],
-      "hint": "Careful observation can reveal safer ways through dangerous rooms."
-    },
-    "C04": {
-      "title": "Three Signs",
-      "text": "The Dawn Key sleeps below the blind sun and needs three signs.",
-      "importance": "major",
-      "foundIn": "R04",
-      "pointsTo": ["R06", "R10"],
-      "tags": ["dawn", "sun", "ritual", "seal"],
-      "hint": "The finale will likely test a pattern, not just possession of an item."
-    },
-    "C05": {
-      "title": "Leave the Tribute",
-      "text": "Leave the tribute. Take only what was entrusted.",
-      "importance": "required",
-      "foundIn": "R05",
-      "pointsTo": ["R10"],
-      "tags": ["tribute", "restraint", "treasure"],
-      "hint": "Some treasure is a temptation. Some treasure is meant to be carried."
-    },
-    "C06": {
-      "title": "The Eye Remembers",
-      "text": "The open eye remembers dawn.",
-      "importance": "lead",
-      "foundIn": "R06",
-      "pointsTo": ["R08", "R10"],
-      "tags": ["eye", "dawn", "sun"],
-      "hint": "This links the chapel symbol to the mirror and reliquary."
-    },
-    "C07": {
-      "title": "Watcher Counting",
-      "text": "Every step is counted after the watcher stirs.",
-      "importance": "warning",
-      "foundIn": "R07",
-      "pointsTo": ["R09", "R10"],
-      "tags": ["threat", "watcher", "counting"],
-      "hint": "The longer and louder the search, the more awake the dungeon becomes."
-    },
-    "C08": {
-      "title": "Ritual Order",
-      "text": "Empty hand. Open eye. Dawn thread.",
-      "importance": "required",
-      "foundIn": "R08",
-      "pointsTo": ["R10"],
-      "tags": ["hands", "eye", "dawn", "thread", "seal"],
-      "hint": "This looks like the order of the final reliquary signs."
-    },
-    "C09": {
-      "title": "Wisdom or Noise",
-      "text": "The final door opens either to wisdom or to noise.",
-      "importance": "warning",
-      "foundIn": "R09",
-      "pointsTo": ["R10"],
-      "tags": ["finale", "threat", "wisdom"],
-      "hint": "You can force the ending, but the dungeon will notice."
-    },
-    "C10": {
-      "title": "Bands Answer",
-      "text": "The reliquary bands answer to empty hand, open eye, dawn thread.",
-      "importance": "confirmation",
-      "foundIn": "R10",
-      "pointsTo": [],
-      "tags": ["hands", "eye", "dawn", "thread", "seal"],
-      "hint": "The treasure trail has reached the reliquary."
-    }
+    "C01": { "title": "Open Eye Mark", "text": "An open eye beneath a rising sun is scratched behind a loose star-inlay.", "importance": "lead", "foundIn": "R01", "pointsTo": ["R06", "R08"], "tags": ["eye", "dawn", "ritual"], "hint": "The eye symbol appears to belong to the Dawn Key ritual." },
+    "C02": { "title": "Empty Hands", "text": "The first seal opens for empty hands.", "importance": "required", "foundIn": "R02", "pointsTo": ["R08", "R10"], "tags": ["seal", "hands", "restraint"], "hint": "This may matter when handling the reliquary." },
+    "C03": { "title": "Dry Stones", "text": "Dark stones mark a safe path through the moonwater.", "importance": "lead", "foundIn": "R03", "pointsTo": ["R04", "R05"], "tags": ["path", "water", "caution"], "hint": "Careful observation can reveal safer ways through dangerous rooms." },
+    "C04": { "title": "Three Signs", "text": "The Dawn Key sleeps below the blind sun and needs three signs.", "importance": "major", "foundIn": "R04", "pointsTo": ["R06", "R10"], "tags": ["dawn", "sun", "ritual", "seal"], "hint": "The finale will likely test a pattern, not just possession of an item." },
+    "C05": { "title": "Leave the Tribute", "text": "Leave the tribute. Take only what was entrusted.", "importance": "required", "foundIn": "R05", "pointsTo": ["R10"], "tags": ["tribute", "restraint", "treasure"], "hint": "Some treasure is a temptation. Some treasure is meant to be carried." },
+    "C06": { "title": "The Eye Remembers", "text": "The open eye remembers dawn.", "importance": "lead", "foundIn": "R06", "pointsTo": ["R08", "R10"], "tags": ["eye", "dawn", "sun"], "hint": "This links the chapel symbol to the mirror and reliquary." },
+    "C07": { "title": "Watcher Counting", "text": "Every step is counted after the watcher stirs.", "importance": "warning", "foundIn": "R07", "pointsTo": ["R09", "R10"], "tags": ["threat", "watcher", "counting"], "hint": "The longer and louder the search, the more awake the dungeon becomes." },
+    "C08": { "title": "Ritual Order", "text": "Empty hand. Open eye. Dawn thread.", "importance": "required", "foundIn": "R08", "pointsTo": ["R10"], "tags": ["hands", "eye", "dawn", "thread", "seal"], "hint": "This looks like the order of the final reliquary signs." },
+    "C09": { "title": "Wisdom or Noise", "text": "The final door opens either to wisdom or to noise.", "importance": "warning", "foundIn": "R09", "pointsTo": ["R10"], "tags": ["finale", "threat", "wisdom"], "hint": "You can force the ending, but the dungeon will notice." },
+    "C10": { "title": "Bands Answer", "text": "The reliquary bands answer to empty hand, open eye, dawn thread.", "importance": "confirmation", "foundIn": "R10", "pointsTo": [], "tags": ["hands", "eye", "dawn", "thread", "seal"], "hint": "The treasure trail has reached the reliquary." }
   }
 }
