@@ -4,9 +4,9 @@ import { validateState } from "../validation/validator.js";
 
 function escapeHtml(value = "") {
   return String(value).replace(
-    /[&<>'"]/g,
+    /[&<>.'"]/g,
     (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", ".": "&#46;", "'": "&#39;", '"': "&quot;" })[
         c
       ],
   );
@@ -84,6 +84,22 @@ function renderMap() {
   document.getElementById("map").innerHTML = grid.join("");
 }
 
+function renderInspectableFeatures(room) {
+  const state = getState();
+  const inspected = new Set(state.player.inspectedFeatures || []);
+  const inspectables = room.inspectables || [];
+
+  if (!inspectables.length) {
+    return `<p class="small">Nothing specific stands out for inspection.</p>`;
+  }
+
+  return `<div class="feature-actions">${inspectables.map(feature => {
+    const done = inspected.has(`${room.id}:${feature.id}`) || feature.done;
+    const label = done ? `Recheck ${feature.label}` : `Inspect ${feature.label}`;
+    return `<button class="feature-button" data-action="INSPECT_FEATURE" data-feature-id="${escapeHtml(feature.id)}" ${done ? "" : ""}>${escapeHtml(label)}</button>`;
+  }).join("")}</div>`;
+}
+
 function renderClueJournal() {
   const state = getState();
   const required = new Set(state.objective.requiredClueIds || []);
@@ -91,7 +107,7 @@ function renderClueJournal() {
   const insights = state.player.insights || [];
 
   if (!clues.length) {
-    return `<p class="small">No clues discovered. Search suspicious features to start the treasure trail.</p>`;
+    return `<p class="small">No clues discovered. Inspect suspicious features to start the treasure trail.</p>`;
   }
 
   const clueCards = clues
@@ -133,11 +149,12 @@ export function render() {
     <div class="room-title"><div><h2>${escapeHtml(room.name)}</h2><span class="pill">Room ${room.id}${room.finale ? " · Finale" : ""}</span></div><span class="pill">v${APP_VERSION} · Schema ${state.schemaVersion}</span></div>
     <div class="room-art">${renderArt(room)}</div>
     <p class="desc">${escapeHtml(room.playerVisible.description)}</p>
-    <h3>Features</h3><ul>${room.playerVisible.features.map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>
+    <h3>Inspectable Features</h3>${renderInspectableFeatures(room)}
+    <h3>Visible Details</h3><ul>${room.playerVisible.features.map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>
     ${room.monster && !room.monster.defeated ? `<p class="desc"><strong>${escapeHtml(room.monster.name)}:</strong> ${escapeHtml(room.monster.playerText)}</p>` : ""}
     <div class="exits">${room.exits.map((exit) => `<button class="primary" data-action="MOVE" data-room-id="${exit.to}">Go ${escapeHtml(exit.dir)}</button>`).join("")}</div>
     <div class="actions">
-      <button data-action="SEARCH" ${room.search?.done ? "disabled" : ""}>Search for Clues</button>
+      <button data-action="SEARCH" ${room.search?.done ? "disabled" : ""}>Search Whole Room</button>
       <button class="good" data-action="LOOT" ${!room.loot?.length || state.player.lootedRooms.includes(room.id) ? "disabled" : ""}>${lootActionLabel}</button>
       <button class="danger" data-action="DEFEAT_MONSTER" ${!room.monster || room.monster.defeated ? "disabled" : ""}>Defeat Monster</button>
     </div>`;
