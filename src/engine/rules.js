@@ -1,13 +1,62 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent, getClueBook } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.8.1";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.8.1";
+import { consultCouncil } from "./council.js?v=0.8.2";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.8.2";
 
 let initialContent = null;
 
+const ITEM_ACTIONS = {
+  L01: {
+    inspect: "The Star-Bronze Buckle is decorative but old. Its seven-pointed star matches the fort motif, though no seal answers it yet.",
+    use: ({ room }) => room.id === "R02"
+      ? "You hold the buckle near the listening shields. The statues ignore it. Apparently fashion is not the first seal."
+      : "The buckle catches a little dungeon-light, but nothing nearby responds.",
+  },
+  L02: {
+    inspect: "The Moon-Rusted Guard Token is cold, stamped with a watch mark and worn smooth by nervous fingers.",
+    use: ({ room }) => room.id === "R03"
+      ? "You lower the guard token toward the moonwater. The ripples briefly part around the safe stones, then close again."
+      : "The guard token chills your palm, but this does not seem to be its post.",
+  },
+  L03: {
+    inspect: "The Keeper's Silver Pin is shaped like a closed eye. Its back is clean, as if it was meant to be worn, not buried in tribute.",
+    use: ({ room, state }) => {
+      if (room.id === "R10") {
+        addItemInsight(state, "ITEM-EYE-PIN", "Item insight: the Keeper's Silver Pin answers the open-eye part of the ritual. It belongs near the reliquary, not in the tribute font.");
+        return "You hold the silver pin before the reliquary. The blind sun warms, acknowledging the sign of the eye.";
+      }
+      if (room.id === "R05") return "The pin feels deliberately separate from the coin stacks. It was entrusted, not offered.";
+      return "The closed-eye pin feels important, but the room gives it no answer.";
+    },
+  },
+  L04: {
+    inspect: "The Dawn-Thread Cord is warm and catches light that is not currently present, which is rude but useful.",
+    use: ({ room, state }) => {
+      if (room.id === "R08") {
+        addItemInsight(state, "ITEM-DAWN-THREAD", "Item insight: the Dawn-Thread Cord fits the mirror's third sign. The clue trail is becoming physical.");
+        return "You hang the Dawn-Thread Cord on the sun-thread hook. The black mirror brightens for one breath.";
+      }
+      if (room.id === "R10") {
+        addItemInsight(state, "ITEM-DAWN-THREAD-RELIQUARY", "Item insight: the Dawn-Thread Cord supports the final dawn-thread sign at the reliquary.");
+        return "You lay the cord near the bronze bands. The final band shivers toward sunrise.";
+      }
+      return "The cord glows faintly, but this is not the right place for the dawn-thread sign.";
+    },
+  },
+  L05: {
+    inspect: "The Dawn Key contains sunrise trapped in amber. It hums like a door remembering how to open.",
+    use: ({ state }) => {
+      if (!state.objective.complete) checkObjective(true);
+      return state.objective.complete
+        ? "You raise the Dawn Key. Somewhere above, a sealed way remembers the morning. Victory is now very plausible."
+        : "The Dawn Key flares, but the dungeon has not fully accepted how you recovered it.";
+    },
+  },
+};
+
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json?v=0.8.1").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json?v=0.8.1");
+  initialContent = await fetch("./data/dungeon.json?v=0.8.2").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=0.8.2");
   ensureDungeonMindState(getState());
   ensureExploreState(getState());
   return getState();
@@ -36,6 +85,17 @@ function ensureExploreState(state) {
   if (!state.player) state.player = {};
   if (!Array.isArray(state.player.insights)) state.player.insights = [];
   if (!Array.isArray(state.player.inspectedFeatures)) state.player.inspectedFeatures = [];
+  if (!Array.isArray(state.player.inspectedItems)) state.player.inspectedItems = [];
+  if (!Array.isArray(state.player.usedItems)) state.player.usedItems = [];
+}
+
+function addItemInsight(state, id, text) {
+  ensureExploreState(state);
+  if (state.player.insights.some(insight => insight.id === id)) return false;
+  state.player.insights.unshift({ id, text, at: new Date().toISOString(), source: "inventory" });
+  state.player.insights = state.player.insights.slice(0, 12);
+  addLog(text);
+  return true;
 }
 
 function clueDetails(clueId) {
@@ -162,6 +222,45 @@ function inspectFeature(action) {
   addThreat(feature.threat || 0, `inspected ${feature.label} in ${room.name}`);
 }
 
+function inventoryItem(itemId) {
+  const state = getState();
+  return state.player.inventory.find(item => item.id === itemId);
+}
+
+function inspectItem(action) {
+  const state = getState();
+  const item = inventoryItem(action.itemId);
+  if (!item) {
+    addLog("You rummage for that item, but your pack refuses to produce it.");
+    return;
+  }
+
+  const text = ITEM_ACTIONS[item.id]?.inspect || `${item.name}: ${item.text}`;
+  const firstInspection = !state.player.inspectedItems.includes(item.id);
+  if (firstInspection) state.player.inspectedItems.push(item.id);
+  addLog(firstInspection ? text : `You inspect ${item.name} again. ${text}`);
+}
+
+function useItem(action) {
+  const state = getState();
+  const room = currentRoom();
+  const item = inventoryItem(action.itemId);
+  if (!item) {
+    addLog("You cannot use an item you do not have. Very unfair, but traditional.");
+    return;
+  }
+
+  const handler = ITEM_ACTIONS[item.id]?.use;
+  const result = typeof handler === "function"
+    ? handler({ state, room, item })
+    : "You try using the item, but the dungeon offers no meaningful response.";
+
+  addLog(result);
+
+  const useId = `${item.id}:${room.id}`;
+  if (!state.player.usedItems.includes(useId)) state.player.usedItems.push(useId);
+}
+
 function processRelevantQueueTriggers(action, state) {
   const resolved = [];
 
@@ -171,17 +270,17 @@ function processRelevantQueueTriggers(action, state) {
     resolved.push(...processActionQueue("NEXT_ROOM_ENTER", state));
   }
 
-  if (["SEARCH", "INSPECT_FEATURE"].includes(action.type)) {
+  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_SEARCH_OPPORTUNITY", state));
   }
 
-  if (["SEARCH", "INSPECT_FEATURE", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
+  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_NARRATION", state));
   }
 
   const room = state.rooms[state.currentRoomId];
   const safeRoomAction = !room?.monster || room.monster.defeated;
-  if (safeRoomAction && ["SEARCH", "INSPECT_FEATURE", "LOOT"].includes(action.type)) {
+  if (safeRoomAction && ["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_SAFE_ROOM_ACTION", state));
   }
 
@@ -216,6 +315,14 @@ export function dispatch(action) {
     }
     case "INSPECT_FEATURE": {
       inspectFeature(action);
+      break;
+    }
+    case "INSPECT_ITEM": {
+      inspectItem(action);
+      break;
+    }
+    case "USE_ITEM": {
+      useItem(action);
       break;
     }
     case "SEARCH": {
