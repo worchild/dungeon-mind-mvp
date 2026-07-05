@@ -51,6 +51,11 @@ main {
   max-width: 1300px;
   margin: 0 auto;
 }
+.play-column {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
 .card {
   background: linear-gradient(
     180deg,
@@ -114,11 +119,19 @@ h3 {
 }
 .actions,
 .exits,
-.toolbar {
+.toolbar,
+.feature-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
   margin-top: 12px;
+}
+.feature-actions {
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid rgba(216, 168, 79, 0.2);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.16);
 }
 button,
 label.file-label {
@@ -145,6 +158,14 @@ button.danger {
 button.good {
   background: #2d5032;
   border-color: #5da665;
+}
+button.feature-button {
+  background: #273047;
+  border-color: rgba(216, 168, 79, 0.55);
+  color: #fff3d0;
+}
+button.feature-button:hover {
+  background: #35405c;
 }
 button:disabled {
   opacity: 0.45;
@@ -176,8 +197,11 @@ li {
   background: linear-gradient(90deg, #6fae77, #d8a84f, #c34f4f);
   transition: width 0.25s ease;
 }
+.log-card {
+  border-color: rgba(216, 168, 79, 0.28);
+}
 .log {
-  max-height: 250px;
+  max-height: 260px;
   overflow: auto;
   font-size: 0.88rem;
   color: #c8d1e1;
