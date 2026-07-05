@@ -1,6 +1,6 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js";
+import { consultCouncil } from "./council.js?v=0.5.0";
 
 let initialContent = null;
 
@@ -120,7 +120,7 @@ export function dispatch(action) {
   const errors = validateState(finalState);
   const councilResult = consultCouncil(action, finalState, errors);
 
-  console.log("Dungeon Council", councilResult);
+  console.log("Dungeon Mind Internal Reasoning", councilResult);
 
   return { ok: errors.length === 0, errors, state: finalState, councilResult };
 }
