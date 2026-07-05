@@ -1,10 +1,11 @@
 import { initialiseGame, dispatch } from "./engine/rules.js";
 import { getState } from "./state/store.js";
-import { render } from "./ui/renderer.js";
+import { render, renderCouncilDebug } from "./ui/renderer.js";
 
 function run(action) {
-  dispatch(action);
+  const result = dispatch(action);
   render();
+  renderCouncilDebug(result?.councilResult);
 }
 
 function exportSave() {
@@ -24,8 +25,9 @@ function importSave(event) {
     try {
       run({ type: "IMPORT_STATE", state: JSON.parse(reader.result) });
     } catch {
-      dispatch({ type: "UNKNOWN_IMPORT_ERROR" });
+      const result = dispatch({ type: "UNKNOWN_IMPORT_ERROR" });
       render();
+      renderCouncilDebug(result?.councilResult);
     }
   };
   reader.readAsText(file);
@@ -52,6 +54,7 @@ async function main() {
     await initialiseGame();
     wireEvents();
     render();
+    renderCouncilDebug(null);
   } catch (error) {
     document.body.innerHTML = `<main class="card"><h2>Dungeon failed to load</h2><p>${error.message}</p><p>Tip: run this through GitHub Pages or a local web server rather than opening the file directly.</p></main>`;
   }
