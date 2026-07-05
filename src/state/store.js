@@ -1,6 +1,6 @@
 export const SCHEMA_VERSION = "1.0";
-export const APP_VERSION = "0.3.0";
-export const STORAGE_KEY = "dungeonMindMvpSaveV030";
+export const APP_VERSION = "0.6.0";
+export const STORAGE_KEY = "dungeonMindMvpSaveV060";
 
 let state = null;
 let clueBook = {};
