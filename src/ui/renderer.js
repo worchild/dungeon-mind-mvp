@@ -62,6 +62,15 @@ function renderMap() {
   document.getElementById("map").innerHTML = grid.join("");
 }
 
+function isCouncilDebugEnabled() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    localStorage.getItem("dmDebugCouncil") === "true" ||
+    params.get("debugCouncil") === "1" ||
+    params.get("debugCouncil") === "true"
+  );
+}
+
 export function render() {
   const state = getState();
   const clueBook = getClueBook();
@@ -109,17 +118,19 @@ export function render() {
     ? `<span class="status-bad">Validator: ${escapeHtml(errors.join(" "))}</span>`
     : `<span class="status-ok">Validator: state OK</span>`;
 }
+
 export function renderCouncilDebug(councilResult) {
   const debugPanel = document.getElementById("debug-panel");
   const debugOutput = document.getElementById("council-debug-output");
-
-  const debugEnabled = localStorage.getItem("dmDebugCouncil") === "true";
+  const debugEnabled = isCouncilDebugEnabled();
 
   if (!debugPanel || !debugOutput) return;
 
   debugPanel.hidden = !debugEnabled;
 
   if (debugEnabled) {
-    debugOutput.textContent = JSON.stringify(councilResult, null, 2);
+    debugOutput.textContent = councilResult
+      ? JSON.stringify(councilResult, null, 2)
+      : "Council debug is enabled. Take an action to generate the first Council result.";
   }
 }
