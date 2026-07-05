@@ -96,8 +96,33 @@ function renderInspectableFeatures(room) {
   return `<div class="feature-actions">${inspectables.map(feature => {
     const done = inspected.has(`${room.id}:${feature.id}`) || feature.done;
     const label = done ? `Recheck ${feature.label}` : `Inspect ${feature.label}`;
-    return `<button class="feature-button" data-action="INSPECT_FEATURE" data-feature-id="${escapeHtml(feature.id)}" ${done ? "" : ""}>${escapeHtml(label)}</button>`;
+    return `<button class="feature-button" data-action="INSPECT_FEATURE" data-feature-id="${escapeHtml(feature.id)}">${escapeHtml(label)}</button>`;
   }).join("")}</div>`;
+}
+
+function renderInventoryItems() {
+  const state = getState();
+  const inspectedItems = new Set(state.player.inspectedItems || []);
+  const usedItems = new Set(state.player.usedItems || []);
+  const room = currentRoom();
+
+  if (!state.player.inventory.length) return `<p class="small">Nothing yet.</p>`;
+
+  return `<ul class="inventory-list">${state.player.inventory.map(item => {
+    const inspected = inspectedItems.has(item.id);
+    const usedHere = usedItems.has(`${item.id}:${room.id}`);
+    return `<li class="inventory-card">
+      <div class="item-head">
+        <strong>${escapeHtml(item.name)}</strong>
+        ${usedHere ? `<span class="pill">used here</span>` : inspected ? `<span class="pill">inspected</span>` : ""}
+      </div>
+      <p class="small">${escapeHtml(item.text)}</p>
+      <div class="item-actions">
+        <button class="item-button" data-action="INSPECT_ITEM" data-item-id="${escapeHtml(item.id)}">${inspected ? "Reinspect" : "Inspect"}</button>
+        <button class="item-button" data-action="USE_ITEM" data-item-id="${escapeHtml(item.id)}">Use here</button>
+      </div>
+    </li>`;
+  }).join("")}</ul>`;
 }
 
 function renderClueJournal() {
@@ -165,14 +190,7 @@ export function render() {
     `${(state.threat.value / state.threat.max) * 100}%`;
   document.getElementById("threatText").textContent =
     `${state.threat.value} / ${state.threat.max}${state.threat.value >= 8 ? " — the dungeon is very awake" : ""}`;
-  document.getElementById("inventory").innerHTML = state.player.inventory.length
-    ? state.player.inventory
-        .map(
-          (i) =>
-            `<li><strong>${escapeHtml(i.name)}</strong><br><span class="small">${escapeHtml(i.text)}</span></li>`,
-        )
-        .join("")
-    : `<li class="small">Nothing yet.</li>`;
+  document.getElementById("inventory").innerHTML = renderInventoryItems();
   document.getElementById("clues").innerHTML = renderClueJournal();
   document.getElementById("log").innerHTML = state.log
     .map((l) => `<p>${escapeHtml(l)}</p>`)
