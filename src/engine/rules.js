@@ -1,5 +1,6 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
+import { consultCouncil } from "./council.js";
 
 let initialContent = null;
 
@@ -47,7 +48,7 @@ function checkObjective(byLoot = false) {
 
 export function dispatch(action) {
   const state = getState();
-  if (!state) return { ok: false, errors: ["Game has not initialised."] };
+  if (!state) return { ok: false, errors: ["Game has not initialised."], councilResult: null };
 
   switch (action.type) {
     case "MOVE": {
@@ -115,6 +116,11 @@ export function dispatch(action) {
     default: addLog(`Unknown action: ${action.type}`);
   }
 
-  const errors = validateState(getState());
-  return { ok: errors.length === 0, errors, state: getState() };
+  const finalState = getState();
+  const errors = validateState(finalState);
+  const councilResult = consultCouncil(action, finalState, errors);
+
+  console.log("Dungeon Council", councilResult);
+
+  return { ok: errors.length === 0, errors, state: finalState, councilResult };
 }
