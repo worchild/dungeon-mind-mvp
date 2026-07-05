@@ -1,72 +1,41 @@
 {
   "schemaVersion": "1.0",
-  "contentVersion": "0.7.1-demo-refresh",
+  "contentVersion": "0.7.2-demo-map-refresh",
   "initialState": {
     "schemaVersion": "1.0",
     "gameId": "dm-mvp-001-refresh",
     "mode": "exploration-demo",
     "currentRoomId": "R01",
     "objective": {
-      "title": "Recover the Dawn Key",
-      "playerText": "Descend into the abandoned star-fort and recover the Dawn Key before the dungeon finishes waking beneath the hill.",
-      "requiredClueIds": [
-        "C02",
-        "C05",
-        "C08"
-      ],
+      "title": "Unseal the Dawn Key",
+      "playerText": "Find the three signs of the star-fort ritual, reach the reliquary, and recover the Dawn Key before the dungeon fully wakes.",
+      "requiredClueIds": ["C02", "C05", "C08"],
       "complete": false
     },
-    "threat": {
-      "value": 0,
-      "max": 10,
-      "events": []
-    },
+    "threat": { "value": 0, "max": 10, "events": [] },
     "player": {
       "inventory": [],
       "clues": [],
-      "visitedRooms": [
-        "R01"
-      ],
+      "visitedRooms": ["R01"],
       "defeatedMonsters": [],
       "searchedRooms": [],
       "lootedRooms": []
     },
-    "log": [
-      "You descend into the old star-fort. Dust drifts upward, as if the dungeon has started breathing again."
-    ],
+    "log": ["You descend into the old star-fort. Dust drifts upward, as if the dungeon has started breathing again."],
     "rooms": {
       "R01": {
         "id": "R01",
         "name": "Stair of Fallen Stars",
-        "map": [
-          2,
-          4
-        ],
+        "map": [0, 4],
         "imageType": "stairs",
         "visited": true,
         "playerVisible": {
           "description": "A broken stair spirals down through a shaft of cold blue light. Brass star-shapes are set into the walls, each one tarnished almost black. A single archway leads north.",
-          "features": [
-            "spiral stair",
-            "brass star inlays",
-            "cold blue light",
-            "north archway"
-          ]
+          "features": ["spiral stair", "brass star inlays", "cold blue light", "north archway"]
         },
-        "hidden": {
-          "dmNotes": "Opening room. Establish the star-fort tone and the sense that the dungeon is waking."
-        },
-        "exits": [
-          {
-            "dir": "North",
-            "to": "R02"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C01",
-          "text": "Behind a loose star-inlay you find a scratched mark: an open eye beneath a rising sun."
-        },
+        "hidden": { "dmNotes": "Opening room. Establish the star-fort tone and the sense that the dungeon is waking." },
+        "exits": [{ "dir": "North", "to": "R02" }],
+        "search": { "done": false, "clueId": "C01", "text": "Behind a loose star-inlay you find a scratched mark: an open eye beneath a rising sun." },
         "loot": [],
         "monster": null,
         "threatOnEnter": 0
@@ -74,137 +43,47 @@
       "R02": {
         "id": "R02",
         "name": "Hall of Listening Shields",
-        "map": [
-          2,
-          3
-        ],
+        "map": [0, 3],
         "imageType": "statues",
         "playerVisible": {
-          "description": "Two rows of cracked shield-statues line the hall. Their bronze faces are turned slightly inward, as if listening for footsteps. Passages lead east and west, while the stair remains south.",
-          "features": [
-            "listening shield-statues",
-            "east passage",
-            "west passage",
-            "south stair"
-          ]
+          "description": "Two rows of cracked shield-statues line the hall. Their bronze faces are turned slightly inward, as if listening for footsteps. A long passage turns east.",
+          "features": ["listening shield-statues", "east passage", "south stair", "scratched bronze faces"]
         },
-        "hidden": {
-          "dmNotes": "Branching hub. Required clue C02 teaches restraint for the final seal."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R01"
-          },
-          {
-            "dir": "East",
-            "to": "R03"
-          },
-          {
-            "dir": "West",
-            "to": "R04"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C02",
-          "text": "One shield bears a fine inscription: 'The first seal opens for empty hands.'"
-        },
-        "loot": [
-          {
-            "id": "L01",
-            "name": "Star-Bronze Buckle",
-            "text": "A tarnished buckle stamped with a seven-pointed star."
-          }
-        ],
+        "hidden": { "dmNotes": "Required clue C02 teaches restraint for the final seal." },
+        "exits": [{ "dir": "South", "to": "R01" }, { "dir": "East", "to": "R03" }],
+        "search": { "done": false, "clueId": "C02", "text": "One shield bears a fine inscription: 'The first seal opens for empty hands.'" },
+        "loot": [{ "id": "L01", "name": "Star-Bronze Buckle", "text": "A tarnished buckle stamped with a seven-pointed star." }],
         "monster": null,
         "threatOnEnter": 1
       },
       "R03": {
         "id": "R03",
         "name": "Moonwater Guardroom",
-        "map": [
-          3,
-          3
-        ],
+        "map": [1, 3],
         "imageType": "water",
         "playerVisible": {
           "description": "Silver water covers the old guardroom floor. A drowned spear rack leans against the wall. Ripples move against the current, then vanish beneath the surface.",
-          "features": [
-            "silver floodwater",
-            "drowned spear rack",
-            "northern door",
-            "moving ripples"
-          ]
+          "features": ["silver floodwater", "drowned spear rack", "north arch", "east service door"]
         },
-        "hidden": {
-          "dmNotes": "First creature encounter. Search reveals safer footing and reinforces careful exploration."
-        },
-        "exits": [
-          {
-            "dir": "West",
-            "to": "R02"
-          },
-          {
-            "dir": "North",
-            "to": "R05"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C03",
-          "text": "You notice dark, dry stones beneath the water: a safe path crosses the room without disturbing the deeper ripples."
-        },
-        "loot": [
-          {
-            "id": "L02",
-            "name": "Moon-Rusted Guard Token",
-            "text": "A corroded token from the star-fort watch, cold no matter how long you hold it."
-          }
-        ],
-        "monster": {
-          "id": "M01",
-          "name": "Moon-Drowned Warden",
-          "defeated": false,
-          "playerText": "A drowned warden rises from the silver water, dragging a broken spear and a terrible attitude."
-        },
+        "hidden": { "dmNotes": "First creature encounter. Search reveals safer footing and reinforces careful exploration." },
+        "exits": [{ "dir": "West", "to": "R02" }, { "dir": "North", "to": "R04" }, { "dir": "East", "to": "R05" }],
+        "search": { "done": false, "clueId": "C03", "text": "You notice dark, dry stones beneath the water: a safe path crosses the room without disturbing the deeper ripples." },
+        "loot": [{ "id": "L02", "name": "Moon-Rusted Guard Token", "text": "A corroded token from the star-fort watch, cold no matter how long you hold it." }],
+        "monster": { "id": "M01", "name": "Moon-Drowned Warden", "defeated": false, "playerText": "A drowned warden rises from the silver water, dragging a broken spear and a terrible attitude." },
         "threatOnEnter": 1
       },
       "R04": {
         "id": "R04",
         "name": "Archive of Unsent Warnings",
-        "map": [
-          1,
-          3
-        ],
+        "map": [1, 2],
         "imageType": "library",
         "playerVisible": {
           "description": "Wax tablets and brittle scrolls fill leaning shelves. Every message is addressed to someone who never arrived. A black candle still smokes in a wall niche.",
-          "features": [
-            "wax tablets",
-            "unsent warning scrolls",
-            "smoking black candle",
-            "north exit"
-          ]
+          "features": ["wax tablets", "unsent warning scrolls", "smoking black candle", "north door"]
         },
-        "hidden": {
-          "dmNotes": "Lore room. Points toward the reliquary and the failed watch-fort guardians."
-        },
-        "exits": [
-          {
-            "dir": "East",
-            "to": "R02"
-          },
-          {
-            "dir": "North",
-            "to": "R06"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C04",
-          "text": "One warning reads: 'The Dawn Key sleeps below the blind sun; wake it only with the right three signs.'"
-        },
+        "hidden": { "dmNotes": "Lore room. Points toward the reliquary and the failed watch-fort guardians." },
+        "exits": [{ "dir": "South", "to": "R03" }, { "dir": "North", "to": "R06" }],
+        "search": { "done": false, "clueId": "C04", "text": "One warning reads: 'The Dawn Key sleeps below the blind sun; wake it only with the right three signs.'" },
         "loot": [],
         "monster": null,
         "threatOnEnter": 0
@@ -212,45 +91,16 @@
       "R05": {
         "id": "R05",
         "name": "Tribute Font of Quiet Coins",
-        "map": [
-          3,
-          2
-        ],
+        "map": [2, 3],
         "imageType": "fountain",
         "playerVisible": {
-          "description": "A dry marble font waits beneath a handprint of dull gold. Coins fill the basin in careful stacks, but the dust around them is untouched. A cramped crawlway leads east.",
-          "features": [
-            "dry marble font",
-            "gold handprint",
-            "stacked old coins",
-            "east crawlway"
-          ]
+          "description": "A dry marble font waits beneath a handprint of dull gold. Coins fill the basin in careful stacks, but the dust around them is untouched. A cramped stair climbs north.",
+          "features": ["dry marble font", "gold handprint", "stacked old coins", "north stair"]
         },
-        "hidden": {
-          "dmNotes": "Required clue C05 teaches not taking tribute. Loot is safe but tempting."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R03"
-          },
-          {
-            "dir": "East",
-            "to": "R07"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C05",
-          "text": "Scratched under the rim: 'Leave the tribute. Take only what was entrusted.'"
-        },
-        "loot": [
-          {
-            "id": "L03",
-            "name": "Keeper's Silver Pin",
-            "text": "A silver pin shaped like a closed eye, found beside the basin rather than inside it."
-          }
-        ],
+        "hidden": { "dmNotes": "Required clue C05 teaches not taking tribute. Loot is safe but tempting." },
+        "exits": [{ "dir": "West", "to": "R03" }, { "dir": "North", "to": "R07" }],
+        "search": { "done": false, "clueId": "C05", "text": "Scratched under the rim: 'Leave the tribute. Take only what was entrusted.'" },
+        "loot": [{ "id": "L03", "name": "Keeper's Silver Pin", "text": "A silver pin shaped like a closed eye, found beside the basin rather than inside it." }],
         "monster": null,
         "threatOnEnter": 1,
         "threatOnLoot": 1
@@ -258,83 +108,31 @@
       "R06": {
         "id": "R06",
         "name": "Chapel of the Blind Sun",
-        "map": [
-          1,
-          2
-        ],
+        "map": [1, 1],
         "imageType": "chapel",
         "playerVisible": {
-          "description": "A stone sun hangs over a cracked altar. Its centre has been carved into a hollow eye. Faded kneeling cushions make a path toward a narrow northern door.",
-          "features": [
-            "blind sun icon",
-            "cracked altar",
-            "kneeling cushions",
-            "north door"
-          ]
+          "description": "A stone sun hangs over a cracked altar. Its centre has been carved into a hollow eye. A low passage runs east from behind the altar.",
+          "features": ["blind sun icon", "cracked altar", "hollow eye", "east passage"]
         },
-        "hidden": {
-          "dmNotes": "Chapel clue points toward the finale. Optional loot supports the Dawn Key ritual."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R04"
-          },
-          {
-            "dir": "North",
-            "to": "R08"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C06",
-          "text": "A groove in the altar points north. Someone has written beside it: 'The open eye remembers dawn.'"
-        },
-        "loot": [
-          {
-            "id": "L04",
-            "name": "Dawn-Thread Cord",
-            "text": "A warm cord woven with gold fibre and a few strands of something brighter than metal."
-          }
-        ],
+        "hidden": { "dmNotes": "Chapel clue points toward the finale. Optional loot supports the Dawn Key ritual." },
+        "exits": [{ "dir": "South", "to": "R04" }, { "dir": "East", "to": "R08" }],
+        "search": { "done": false, "clueId": "C06", "text": "A groove in the altar points east. Someone has written beside it: 'The open eye remembers dawn.'" },
+        "loot": [{ "id": "L04", "name": "Dawn-Thread Cord", "text": "A warm cord woven with gold fibre and a few strands of something brighter than metal." }],
         "monster": null,
         "threatOnEnter": 1
       },
       "R07": {
         "id": "R07",
         "name": "Scribe Cells of the Last Watch",
-        "map": [
-          4,
-          2
-        ],
+        "map": [2, 2],
         "imageType": "cells",
         "playerVisible": {
-          "description": "Tiny scribe cells have collapsed into one another. Slate boards lie everywhere, each covered in repeated star-counts. The ceiling gives an occasional, deeply unhelpful groan.",
-          "features": [
-            "collapsed scribe cells",
-            "star-count slates",
-            "unstable ceiling",
-            "north tunnel"
-          ]
+          "description": "Tiny scribe cells have collapsed into one another. Slate boards lie everywhere, each covered in repeated star-counts. A tunnel slopes north into colder air.",
+          "features": ["collapsed scribe cells", "star-count slates", "unstable ceiling", "north tunnel"]
         },
-        "hidden": {
-          "dmNotes": "Threat and lore room. Search makes noise and raises the dungeon's attention."
-        },
-        "exits": [
-          {
-            "dir": "West",
-            "to": "R05"
-          },
-          {
-            "dir": "North",
-            "to": "R09"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C07",
-          "text": "One slate repeats a final line: 'Every step is counted after the watcher stirs.'"
-        },
+        "hidden": { "dmNotes": "Threat and lore room. Search makes noise and raises the dungeon's attention." },
+        "exits": [{ "dir": "South", "to": "R05" }, { "dir": "North", "to": "R09" }],
+        "search": { "done": false, "clueId": "C07", "text": "One slate repeats a final line: 'Every step is counted after the watcher stirs.'" },
         "loot": [],
         "monster": null,
         "threatOnEnter": 1,
@@ -343,38 +141,15 @@
       "R08": {
         "id": "R08",
         "name": "Mirror of the Empty Hand",
-        "map": [
-          1,
-          1
-        ],
+        "map": [2, 1],
         "imageType": "mirror",
         "playerVisible": {
-          "description": "A black mirror stands in a frame of old bone-white wood. It reflects the room perfectly, except your hands are missing from the image. Three bronze hooks hang beside it.",
-          "features": [
-            "black mirror",
-            "missing reflected hands",
-            "three bronze hooks",
-            "east bridge"
-          ]
+          "description": "A black mirror stands in a frame of old bone-white wood. It reflects the room perfectly, except your hands are missing from the image. A bridge waits east.",
+          "features": ["black mirror", "missing reflected hands", "three bronze hooks", "east bridge"]
         },
-        "hidden": {
-          "dmNotes": "Required clue C08. Gives final ritual order in player-facing metaphor."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R06"
-          },
-          {
-            "dir": "East",
-            "to": "R09"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C08",
-          "text": "Frost letters spread across the mirror: 'Empty hand. Open eye. Dawn thread.'"
-        },
+        "hidden": { "dmNotes": "Required clue C08. Gives final ritual order in player-facing metaphor." },
+        "exits": [{ "dir": "West", "to": "R06" }, { "dir": "East", "to": "R09" }],
+        "search": { "done": false, "clueId": "C08", "text": "Frost letters spread across the mirror: 'Empty hand. Open eye. Dawn thread.'" },
         "loot": [],
         "monster": null,
         "threatOnEnter": 0
@@ -382,90 +157,33 @@
       "R09": {
         "id": "R09",
         "name": "Bridge Above the Counting Dark",
-        "map": [
-          3,
-          1
-        ],
+        "map": [3, 1],
         "imageType": "bridge",
         "playerVisible": {
           "description": "A narrow bridge crosses a shaft too deep for torchlight. Far below, something vast shifts as though counting the echoes. A bronze door waits to the north.",
-          "features": [
-            "narrow stone bridge",
-            "bottomless dark shaft",
-            "echoing movement below",
-            "bronze north door"
-          ]
+          "features": ["narrow stone bridge", "bottomless dark shaft", "echoing movement below", "bronze north door"]
         },
-        "hidden": {
-          "dmNotes": "Final approach. The player can enter the finale even without all clues, but risk rises."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R07"
-          },
-          {
-            "dir": "West",
-            "to": "R08"
-          },
-          {
-            "dir": "North",
-            "to": "R10"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C09",
-          "text": "A warning is carved into the bridge rail: 'The door opens either to wisdom or to noise.'"
-        },
+        "hidden": { "dmNotes": "Final approach. The player can enter the finale even without all clues, but risk rises." },
+        "exits": [{ "dir": "South", "to": "R07" }, { "dir": "West", "to": "R08" }, { "dir": "North", "to": "R10" }],
+        "search": { "done": false, "clueId": "C09", "text": "A warning is carved into the bridge rail: 'The door opens either to wisdom or to noise.'" },
         "loot": [],
-        "monster": {
-          "id": "M02",
-          "name": "Starved Echo-Thing",
-          "defeated": false,
-          "playerText": "A thin creature made of old echoes crawls up from beneath the bridge. It looks like it has been rehearsing this entrance for centuries."
-        },
+        "monster": { "id": "M02", "name": "Starved Echo-Thing", "defeated": false, "playerText": "A thin creature made of old echoes crawls up from beneath the bridge. It looks like it has been rehearsing this entrance for centuries." },
         "threatOnEnter": 2
       },
       "R10": {
         "id": "R10",
         "name": "Reliquary of the Waking Dawn",
-        "map": [
-          3,
-          0
-        ],
+        "map": [3, 0],
         "imageType": "reliquary",
         "finale": true,
         "playerVisible": {
           "description": "A golden reliquary waits beneath a blind sun carved into the ceiling. Three bands of bronze lock its glass heart. Inside, the Dawn Key glows like sunrise trapped in amber.",
-          "features": [
-            "golden reliquary",
-            "blind sun ceiling",
-            "three bronze bands",
-            "glowing Dawn Key"
-          ]
+          "features": ["golden reliquary", "blind sun ceiling", "three bronze bands", "glowing Dawn Key"]
         },
-        "hidden": {
-          "dmNotes": "Final room. L05 completes objective. Missing required clues causes noisy completion penalty in rules engine."
-        },
-        "exits": [
-          {
-            "dir": "South",
-            "to": "R09"
-          }
-        ],
-        "search": {
-          "done": false,
-          "clueId": "C10",
-          "text": "The bronze bands tremble in order: empty hand, open eye, dawn thread. The reliquary is ready."
-        },
-        "loot": [
-          {
-            "id": "L05",
-            "name": "Dawn Key",
-            "text": "A warm key of amber light. The dungeon hates that you have it, which is generally a good sign."
-          }
-        ],
+        "hidden": { "dmNotes": "Final room. L05 completes objective. Missing required clues causes noisy completion penalty in rules engine." },
+        "exits": [{ "dir": "South", "to": "R09" }],
+        "search": { "done": false, "clueId": "C10", "text": "The bronze bands tremble in order: empty hand, open eye, dawn thread. The Dawn Key is ready to be recovered." },
+        "loot": [{ "id": "L05", "name": "Dawn Key", "text": "You recover the Dawn Key from the opened reliquary. The dungeon hates this development, which is usually a good sign." }],
         "monster": null,
         "threatOnEnter": 2,
         "threatOnLoot": 2
