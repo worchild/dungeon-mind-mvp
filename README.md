@@ -1,4 +1,4 @@
-# Dungeon Mind v0.8.1 – Inspectable Features
+# Dungeon Mind v0.8.2 – Actionable Inventory
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,7 +12,7 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.8.1 Inspectable Features**
+Current version: **0.8.2 Actionable Inventory**
 
 ## Run locally
 
@@ -50,6 +50,8 @@ http://localhost:8000
 - Clue Journal with clue titles, importance, tags, leads, and destination hints
 - Insight messages when discovered clues connect
 - Inspectable room features that reveal clue, flavour, warning, or threat results
+- Actionable inventory items with Inspect and Use here actions
+- Item use can create item insights and respond differently by room
 
 ## Project structure
 
@@ -82,7 +84,7 @@ tests/
 
 ## Explore mode principle
 
-Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain visible features, inspectable details reveal clues or flavour, clues point toward other rooms or ritual ideas, and the journal helps the player connect discoveries without leaking hidden Dungeon Mind data.
+Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain visible features, inspectable details reveal clues or flavour, items can be inspected or used in context, clues point toward other rooms or ritual ideas, and the journal helps the player connect discoveries without leaking hidden Dungeon Mind data.
 
 ## Architecture principle
 
