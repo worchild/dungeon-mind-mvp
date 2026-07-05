@@ -1,6 +1,6 @@
-import { initialiseGame, dispatch } from "./engine/rules.js?v=0.8.1";
-import { getState } from "./state/store.js?v=0.8.1";
-import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.8.1";
+import { initialiseGame, dispatch } from "./engine/rules.js?v=0.8.2";
+import { getState } from "./state/store.js?v=0.8.2";
+import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.8.2";
 
 function run(action) {
   const result = dispatch(action);
@@ -12,7 +12,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(getState(), null, 2)], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "dungeon-mind-save-v0.8.1.json";
+  link.download = "dungeon-mind-save-v0.8.2.json";
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -37,7 +37,12 @@ function wireEvents() {
   document.body.addEventListener("click", event => {
     const button = event.target.closest("button[data-action]");
     if (!button) return;
-    run({ type: button.dataset.action, roomId: button.dataset.roomId, featureId: button.dataset.featureId });
+    run({
+      type: button.dataset.action,
+      roomId: button.dataset.roomId,
+      featureId: button.dataset.featureId,
+      itemId: button.dataset.itemId,
+    });
   });
 
   document.getElementById("saveBtn").addEventListener("click", () => run({ type: "SAVE" }));
