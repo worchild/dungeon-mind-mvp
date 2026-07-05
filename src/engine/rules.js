@@ -1,12 +1,14 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.5.0";
+import { consultCouncil } from "./council.js?v=0.6.0";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.6.0";
 
 let initialContent = null;
 
 export async function initialiseGame() {
   initialContent = await fetch("./data/dungeon.json").then(r => r.json());
   await loadDungeonContent("./data/dungeon.json");
+  ensureDungeonMindState(getState());
   return getState();
 }
 
@@ -46,9 +48,41 @@ function checkObjective(byLoot = false) {
   }
 }
 
+function processRelevantQueueTriggers(action, state) {
+  const resolved = [];
+
+  resolved.push(...processActionQueue("NEXT_PLAYER_ACTION", state));
+
+  if (action.type === "MOVE") {
+    resolved.push(...processActionQueue("NEXT_ROOM_ENTER", state));
+  }
+
+  if (action.type === "SEARCH") {
+    resolved.push(...processActionQueue("NEXT_SEARCH_OPPORTUNITY", state));
+  }
+
+  if (["SEARCH", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
+    resolved.push(...processActionQueue("NEXT_NARRATION", state));
+  }
+
+  const room = state.rooms[state.currentRoomId];
+  const safeRoomAction = !room?.monster || room.monster.defeated;
+  if (safeRoomAction && ["SEARCH", "LOOT"].includes(action.type)) {
+    resolved.push(...processActionQueue("NEXT_SAFE_ROOM_ACTION", state));
+  }
+
+  if (state.currentRoomId === "R10") {
+    resolved.push(...processActionQueue("NEXT_FINALE_ACTION", state));
+  }
+
+  return resolved;
+}
+
 export function dispatch(action) {
   const state = getState();
   if (!state) return { ok: false, errors: ["Game has not initialised."], councilResult: null };
+
+  ensureDungeonMindState(state);
 
   switch (action.type) {
     case "MOVE": {
@@ -99,6 +133,7 @@ export function dispatch(action) {
     case "LOAD": {
       try {
         const loaded = loadSavedState();
+        if (loaded) ensureDungeonMindState(loaded);
         addLog(loaded ? "Game loaded from local save." : "No local save found.");
       } catch { addLog("Save file could not be loaded."); }
       break;
@@ -106,19 +141,32 @@ export function dispatch(action) {
     case "IMPORT_STATE": {
       const errors = validateState(action.state);
       if (errors.length) addLog("Import rejected: " + errors.join(" "));
-      else { setState(action.state); addLog("Imported save loaded."); }
+      else {
+        ensureDungeonMindState(action.state);
+        setState(action.state);
+        addLog("Imported save loaded.");
+      }
       break;
     }
     case "RESET": {
       setState(structuredClone(initialContent.initialState));
+      ensureDungeonMindState(getState());
       break;
     }
     default: addLog(`Unknown action: ${action.type}`);
   }
 
   const finalState = getState();
+  ensureDungeonMindState(finalState);
+  const resolvedActions = processRelevantQueueTriggers(action, finalState);
   const errors = validateState(finalState);
   const councilResult = consultCouncil(action, finalState, errors);
+  const enqueuedActions = enqueueDirectorActions(finalState, councilResult.actionQueue);
+
+  councilResult.resolvedActions = resolvedActions;
+  councilResult.enqueuedActions = enqueuedActions;
+  councilResult.persistedActionQueue = finalState.dungeonMind.actionQueue;
+  councilResult.resolvedActionHistory = finalState.dungeonMind.resolvedActions;
 
   console.log("Dungeon Mind Internal Reasoning", councilResult);
 
