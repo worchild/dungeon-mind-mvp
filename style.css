@@ -233,6 +233,54 @@ footer {
   margin: 0 auto;
   font-size: 0.8rem;
 }
+.clue-journal {
+  list-style: none;
+  margin-left: 0;
+}
+.clue-card {
+  border: 1px solid rgba(216, 168, 79, 0.32);
+  background: rgba(216, 168, 79, 0.08);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.clue-card.required {
+  border-color: rgba(118, 184, 121, 0.65);
+  background: rgba(118, 184, 121, 0.09);
+}
+.clue-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: start;
+}
+.clue-card p {
+  margin: 7px 0;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.tag {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 7px;
+  color: #fff3d0;
+  background: rgba(0, 0, 0, 0.22);
+  font-size: 0.72rem;
+}
+.insight {
+  border-left: 3px solid var(--accent);
+  padding-left: 9px;
+  color: #fff3d0;
+  line-height: 1.45;
+}
+h4 {
+  color: #fff3d0;
+  margin: 12px 0 6px;
+}
 #debug-panel {
   grid-column: 1 / -1;
   border-color: #76b879;
