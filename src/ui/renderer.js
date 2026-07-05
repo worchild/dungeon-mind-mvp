@@ -12,6 +12,28 @@ function escapeHtml(value = "") {
   );
 }
 
+function getRoomName(roomId) {
+  const state = getState();
+  return state.rooms?.[roomId]?.name || roomId;
+}
+
+function clueDetails(clueId) {
+  const clue = getClueBook()[clueId];
+  if (!clue) return { id: clueId, title: clueId, text: clueId, importance: "unknown", pointsTo: [], tags: [] };
+  if (typeof clue === "string") return { id: clueId, title: clueId, text: clue, importance: "lead", pointsTo: [], tags: [] };
+
+  return {
+    id: clueId,
+    title: clue.title || clueId,
+    text: clue.text || clueId,
+    importance: clue.importance || "lead",
+    foundIn: clue.foundIn,
+    pointsTo: clue.pointsTo || [],
+    tags: clue.tags || [],
+    hint: clue.hint || "",
+  };
+}
+
 function renderArt(room) {
   const title = escapeHtml(room.name);
   const labels = room.playerVisible.features
@@ -62,9 +84,48 @@ function renderMap() {
   document.getElementById("map").innerHTML = grid.join("");
 }
 
+function renderClueJournal() {
+  const state = getState();
+  const required = new Set(state.objective.requiredClueIds || []);
+  const clues = state.player.clues || [];
+  const insights = state.player.insights || [];
+
+  if (!clues.length) {
+    return `<p class="small">No clues discovered. Search suspicious features to start the treasure trail.</p>`;
+  }
+
+  const clueCards = clues
+    .map((id) => {
+      const clue = clueDetails(id);
+      const leadText = clue.pointsTo?.length
+        ? clue.pointsTo.map(getRoomName).join(" → ")
+        : "No onward lead";
+      const tags = clue.tags?.length
+        ? clue.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")
+        : "";
+
+      return `<li class="clue-card ${required.has(id) ? "required" : ""}">
+        <div class="clue-head">
+          <strong>${escapeHtml(clue.title)}</strong>
+          <span class="pill">${escapeHtml(clue.importance)}${required.has(id) ? " · core sign" : ""}</span>
+        </div>
+        <p>${escapeHtml(clue.text)}</p>
+        ${clue.hint ? `<p class="small"><strong>Lead:</strong> ${escapeHtml(clue.hint)}</p>` : ""}
+        <p class="small"><strong>Points toward:</strong> ${escapeHtml(leadText)}</p>
+        ${tags ? `<div class="tags">${tags}</div>` : ""}
+      </li>`;
+    })
+    .join("");
+
+  const insightCards = insights.length
+    ? `<h4>Insights</h4>${insights.map(insight => `<p class="insight">${escapeHtml(insight.text)}</p>`).join("")}`
+    : `<p class="small">No clue connections made yet.</p>`;
+
+  return `<ul class="clue-journal">${clueCards}</ul>${insightCards}`;
+}
+
 export function render() {
   const state = getState();
-  const clueBook = getClueBook();
   const room = currentRoom();
   const lootActionLabel = room.finale ? "Recover Dawn Key" : "Collect Loot";
 
@@ -76,7 +137,7 @@ export function render() {
     ${room.monster && !room.monster.defeated ? `<p class="desc"><strong>${escapeHtml(room.monster.name)}:</strong> ${escapeHtml(room.monster.playerText)}</p>` : ""}
     <div class="exits">${room.exits.map((exit) => `<button class="primary" data-action="MOVE" data-room-id="${exit.to}">Go ${escapeHtml(exit.dir)}</button>`).join("")}</div>
     <div class="actions">
-      <button data-action="SEARCH" ${room.search?.done ? "disabled" : ""}>Search Room</button>
+      <button data-action="SEARCH" ${room.search?.done ? "disabled" : ""}>Search for Clues</button>
       <button class="good" data-action="LOOT" ${!room.loot?.length || state.player.lootedRooms.includes(room.id) ? "disabled" : ""}>${lootActionLabel}</button>
       <button class="danger" data-action="DEFEAT_MONSTER" ${!room.monster || room.monster.defeated ? "disabled" : ""}>Defeat Monster</button>
     </div>`;
@@ -95,11 +156,7 @@ export function render() {
         )
         .join("")
     : `<li class="small">Nothing yet.</li>`;
-  document.getElementById("clues").innerHTML = state.player.clues.length
-    ? state.player.clues
-        .map((id) => `<li>${escapeHtml(clueBook[id] || id)}</li>`)
-        .join("")
-    : `<li class="small">No clues discovered.</li>`;
+  document.getElementById("clues").innerHTML = renderClueJournal();
   document.getElementById("log").innerHTML = state.log
     .map((l) => `<p>${escapeHtml(l)}</p>`)
     .join("");
