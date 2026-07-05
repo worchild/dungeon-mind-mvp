@@ -1,13 +1,13 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent, getClueBook } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.8.0";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.8.0";
+import { consultCouncil } from "./council.js?v=0.8.1";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.8.1";
 
 let initialContent = null;
 
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json?v=0.8.0").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json?v=0.8.0");
+  initialContent = await fetch("./data/dungeon.json?v=0.8.1").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=0.8.1");
   ensureDungeonMindState(getState());
   ensureExploreState(getState());
   return getState();
@@ -35,6 +35,7 @@ function addThreat(amount, reason) {
 function ensureExploreState(state) {
   if (!state.player) state.player = {};
   if (!Array.isArray(state.player.insights)) state.player.insights = [];
+  if (!Array.isArray(state.player.inspectedFeatures)) state.player.inspectedFeatures = [];
 }
 
 function clueDetails(clueId) {
@@ -51,6 +52,14 @@ function clueDetails(clueId) {
     tags: clue.tags || [],
     hint: clue.hint || "",
   };
+}
+
+function addClue(clueId) {
+  const state = getState();
+  if (!clueId || state.player.clues.includes(clueId)) return false;
+  state.player.clues.push(clueId);
+  addInsightForClue(clueId);
+  return true;
 }
 
 function addInsightForClue(clueId) {
@@ -126,6 +135,33 @@ function checkObjective(byLoot = false) {
   }
 }
 
+function inspectFeature(action) {
+  const state = getState();
+  const room = currentRoom();
+  const feature = room.inspectables?.find(item => item.id === action.featureId);
+
+  if (!feature) {
+    addLog("You study the room, but nothing answers your attention. Rude architecture.");
+    return;
+  }
+
+  const inspectionId = `${room.id}:${feature.id}`;
+  if (state.player.inspectedFeatures.includes(inspectionId)) {
+    addLog(feature.repeatText || `You have already inspected ${feature.label}.`);
+    return;
+  }
+
+  state.player.inspectedFeatures.push(inspectionId);
+  feature.done = true;
+  addLog(feature.text);
+
+  if (feature.clueId && addClue(feature.clueId)) {
+    addLog(`Clue discovered: ${clueDetails(feature.clueId).title}.`);
+  }
+
+  addThreat(feature.threat || 0, `inspected ${feature.label} in ${room.name}`);
+}
+
 function processRelevantQueueTriggers(action, state) {
   const resolved = [];
 
@@ -135,17 +171,17 @@ function processRelevantQueueTriggers(action, state) {
     resolved.push(...processActionQueue("NEXT_ROOM_ENTER", state));
   }
 
-  if (action.type === "SEARCH") {
+  if (["SEARCH", "INSPECT_FEATURE"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_SEARCH_OPPORTUNITY", state));
   }
 
-  if (["SEARCH", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
+  if (["SEARCH", "INSPECT_FEATURE", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_NARRATION", state));
   }
 
   const room = state.rooms[state.currentRoomId];
   const safeRoomAction = !room?.monster || room.monster.defeated;
-  if (safeRoomAction && ["SEARCH", "LOOT"].includes(action.type)) {
+  if (safeRoomAction && ["SEARCH", "INSPECT_FEATURE", "LOOT"].includes(action.type)) {
     resolved.push(...processActionQueue("NEXT_SAFE_ROOM_ACTION", state));
   }
 
@@ -178,15 +214,16 @@ export function dispatch(action) {
       }
       break;
     }
+    case "INSPECT_FEATURE": {
+      inspectFeature(action);
+      break;
+    }
     case "SEARCH": {
       const room = currentRoom();
       if (!room.search || room.search.done) break;
       room.search.done = true;
       if (!state.player.searchedRooms.includes(room.id)) state.player.searchedRooms.push(room.id);
-      if (room.search.clueId && !state.player.clues.includes(room.search.clueId)) {
-        state.player.clues.push(room.search.clueId);
-        addInsightForClue(room.search.clueId);
-      }
+      if (room.search.clueId) addClue(room.search.clueId);
       addLog(room.search.text);
       addThreat(room.threatOnSearch || 0, `searched ${room.name}`);
       break;
