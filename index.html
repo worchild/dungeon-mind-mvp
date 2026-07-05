@@ -3,24 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dungeon Mind v0.4.1 - Dungeon Council Debug</title>
-    <link rel="stylesheet" href="style.css?v=0.4.1" />
-    <script type="module" src="./src/app.js?v=0.4.1"></script>
+    <title>Dungeon Mind v0.4.2 - Internal Reasoning</title>
+    <link rel="stylesheet" href="style.css?v=0.4.2" />
+    <script type="module" src="./src/app.js?v=0.4.2"></script>
   </head>
   <body>
     <header>
-      <h1>Dungeon Mind v0.4.1</h1>
+      <h1>Dungeon Mind v0.4.2</h1>
       <div class="subtitle">
-        Dungeon Council debug build · modular rules · JSON dungeon · validator protected
+        Internal reasoning build · modular rules · JSON dungeon · validator protected
       </div>
     </header>
 
     <main>
-      <section id="debug-panel" class="card debug-card">
-        <h2>Dungeon Council Debug</h2>
-        <p class="small">Debug build marker: if you can read this, the latest GitHub Pages files are loading.</p>
-        <pre id="council-debug-output">Council debug panel loaded. Take an action to generate the first Council result.</pre>
-      </section>
       <section class="card" id="roomPanel"></section>
 
       <aside class="side">
@@ -69,6 +64,12 @@
           <div id="log" class="log"></div>
         </div>
       </aside>
+
+      <section id="debug-panel" class="card debug-card">
+        <h2>Dungeon Mind — Internal Reasoning</h2>
+        <p class="small">Developer-only reasoning view. Scroll here after player actions to inspect Council recommendations.</p>
+        <pre id="council-debug-output">Internal reasoning panel loaded. Take an action to generate the first Council result.</pre>
+      </section>
     </main>
   </body>
 </html>
