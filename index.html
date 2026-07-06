@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dungeon Mind v0.9.2 - Living Dungeon Systems</title>
-    <link rel="stylesheet" href="style.css?v=0.9.2" />
-    <script type="module" src="./src/app-v070.js?v=0.9.2"></script>
+    <title>Dungeon Mind v0.9.3 - Release Candidate Polish</title>
+    <link rel="stylesheet" href="style.css?v=0.9.3" />
+    <script type="module" src="./src/app-v070.js?v=0.9.3"></script>
   </head>
   <body>
     <header>
-      <h1>Dungeon Mind v0.9.2</h1>
+      <h1>Dungeon Mind v0.9.3</h1>
       <div class="subtitle">
-        Noise · hidden awareness · monster patrols · living dungeon event library · treasure hunt exploration
+        Release candidate polish · ritual progress · living dungeon systems · treasure hunt exploration
       </div>
     </header>
 
@@ -64,13 +64,14 @@
               hidden
           /></label>
           <button id="resetBtn" class="danger">Reset</button>
+          <button id="devToolsBtn">Show Dev Tools</button>
         </div>
       </aside>
 
-      <section id="debug-panel" class="card debug-card">
+      <section id="debug-panel" class="card debug-card" hidden>
         <h2>Dungeon Mind — Developer Diagnostics</h2>
-        <p class="small">Developer-only view. Scroll here after player actions to inspect Council output, event queue, hidden awareness, patrols, noise, and living dungeon history.</p>
-        <pre id="council-debug-output">Diagnostics panel loaded. Take an action to generate Director decisions, queued events, noise, awareness, and patrol state.</pre>
+        <p class="small">Developer-only view. Inspect Council output, event queue, hidden awareness, patrols, noise, and living dungeon history.</p>
+        <pre id="council-debug-output">Diagnostics hidden. Take an action, then show Dev Tools to inspect the latest state.</pre>
       </section>
     </main>
   </body>
