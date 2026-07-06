@@ -1,7 +1,8 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent, getClueBook } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.8.2";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.8.2";
+import { consultCouncil } from "./council.js?v=0.9.0";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.9.0";
+import { ensureEventState, eventTriggersForAction, processEventQueue, scheduleDirectorEvents } from "./eventQueue.js?v=0.9.0";
 
 let initialContent = null;
 
@@ -55,9 +56,10 @@ const ITEM_ACTIONS = {
 };
 
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json?v=0.8.2").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json?v=0.8.2");
+  initialContent = await fetch("./data/dungeon.json?v=0.9.0").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=0.9.0");
   ensureDungeonMindState(getState());
+  ensureEventState(getState());
   ensureExploreState(getState());
   return getState();
 }
@@ -127,10 +129,7 @@ function addInsightForClue(clueId) {
   ensureExploreState(state);
 
   const newClue = clueDetails(clueId);
-  const previousClues = state.player.clues
-    .filter(id => id !== clueId)
-    .map(clueDetails);
-
+  const previousClues = state.player.clues.filter(id => id !== clueId).map(clueDetails);
   const sharedTags = [...new Set(previousClues.flatMap(clue =>
     (clue.tags || []).filter(tag => (newClue.tags || []).includes(tag)),
   ))];
@@ -164,14 +163,7 @@ function addInsightForClue(clueId) {
   insightRules.forEach(rule => {
     if (!rule.when()) return;
     if (state.player.insights.some(insight => insight.id === rule.id)) return;
-
-    const insight = {
-      id: rule.id,
-      text: rule.text,
-      clueId,
-      at: new Date().toISOString(),
-    };
-
+    const insight = { id: rule.id, text: rule.text, clueId, at: new Date().toISOString() };
     state.player.insights.unshift(insight);
     state.player.insights = state.player.insights.slice(0, 12);
     addLog(rule.text);
@@ -263,31 +255,14 @@ function useItem(action) {
 
 function processRelevantQueueTriggers(action, state) {
   const resolved = [];
-
   resolved.push(...processActionQueue("NEXT_PLAYER_ACTION", state));
-
-  if (action.type === "MOVE") {
-    resolved.push(...processActionQueue("NEXT_ROOM_ENTER", state));
-  }
-
-  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM"].includes(action.type)) {
-    resolved.push(...processActionQueue("NEXT_SEARCH_OPPORTUNITY", state));
-  }
-
-  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) {
-    resolved.push(...processActionQueue("NEXT_NARRATION", state));
-  }
-
+  if (action.type === "MOVE") resolved.push(...processActionQueue("NEXT_ROOM_ENTER", state));
+  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM"].includes(action.type)) resolved.push(...processActionQueue("NEXT_SEARCH_OPPORTUNITY", state));
+  if (["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT", "DEFEAT_MONSTER"].includes(action.type)) resolved.push(...processActionQueue("NEXT_NARRATION", state));
   const room = state.rooms[state.currentRoomId];
   const safeRoomAction = !room?.monster || room.monster.defeated;
-  if (safeRoomAction && ["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT"].includes(action.type)) {
-    resolved.push(...processActionQueue("NEXT_SAFE_ROOM_ACTION", state));
-  }
-
-  if (state.currentRoomId === "R10") {
-    resolved.push(...processActionQueue("NEXT_FINALE_ACTION", state));
-  }
-
+  if (safeRoomAction && ["SEARCH", "INSPECT_FEATURE", "INSPECT_ITEM", "USE_ITEM", "LOOT"].includes(action.type)) resolved.push(...processActionQueue("NEXT_SAFE_ROOM_ACTION", state));
+  if (state.currentRoomId === "R10") resolved.push(...processActionQueue("NEXT_FINALE_ACTION", state));
   return resolved;
 }
 
@@ -296,6 +271,7 @@ export function dispatch(action) {
   if (!state) return { ok: false, errors: ["Game has not initialised."], councilResult: null };
 
   ensureDungeonMindState(state);
+  ensureEventState(state);
   ensureExploreState(state);
 
   switch (action.type) {
@@ -313,18 +289,9 @@ export function dispatch(action) {
       }
       break;
     }
-    case "INSPECT_FEATURE": {
-      inspectFeature(action);
-      break;
-    }
-    case "INSPECT_ITEM": {
-      inspectItem(action);
-      break;
-    }
-    case "USE_ITEM": {
-      useItem(action);
-      break;
-    }
+    case "INSPECT_FEATURE": inspectFeature(action); break;
+    case "INSPECT_ITEM": inspectItem(action); break;
+    case "USE_ITEM": useItem(action); break;
     case "SEARCH": {
       const room = currentRoom();
       if (!room.search || room.search.done) break;
@@ -361,6 +328,7 @@ export function dispatch(action) {
         const loaded = loadSavedState();
         if (loaded) {
           ensureDungeonMindState(loaded);
+          ensureEventState(loaded);
           ensureExploreState(loaded);
         }
         addLog(loaded ? "Game loaded from local save." : "No local save found.");
@@ -372,6 +340,7 @@ export function dispatch(action) {
       if (errors.length) addLog("Import rejected: " + errors.join(" "));
       else {
         ensureDungeonMindState(action.state);
+        ensureEventState(action.state);
         ensureExploreState(action.state);
         setState(action.state);
         addLog("Imported save loaded.");
@@ -381,6 +350,7 @@ export function dispatch(action) {
     case "RESET": {
       setState(structuredClone(initialContent.initialState));
       ensureDungeonMindState(getState());
+      ensureEventState(getState());
       ensureExploreState(getState());
       break;
     }
@@ -389,16 +359,26 @@ export function dispatch(action) {
 
   const finalState = getState();
   ensureDungeonMindState(finalState);
+  ensureEventState(finalState);
   ensureExploreState(finalState);
+
   const resolvedActions = processRelevantQueueTriggers(action, finalState);
+  const eventTriggers = eventTriggersForAction(action, finalState);
+  const resolvedEvents = processEventQueue(eventTriggers, finalState);
   const errors = validateState(finalState);
   const councilResult = consultCouncil(action, finalState, errors);
   const enqueuedActions = enqueueDirectorActions(finalState, councilResult.actionQueue);
+  const enqueuedEvents = scheduleDirectorEvents(action, finalState);
 
   councilResult.resolvedActions = resolvedActions;
   councilResult.enqueuedActions = enqueuedActions;
   councilResult.persistedActionQueue = finalState.dungeonMind.actionQueue;
   councilResult.resolvedActionHistory = finalState.dungeonMind.resolvedActions;
+  councilResult.eventTriggers = eventTriggers;
+  councilResult.resolvedEvents = resolvedEvents;
+  councilResult.enqueuedEvents = enqueuedEvents;
+  councilResult.persistedEventQueue = finalState.dungeonMind.eventQueue;
+  councilResult.eventHistory = finalState.dungeonMind.eventHistory;
 
   console.log("Dungeon Mind Internal Reasoning", councilResult);
 
