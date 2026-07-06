@@ -1,4 +1,4 @@
-# Dungeon Mind v0.9.1 – Living Dungeon Event Library
+# Dungeon Mind v0.9.2 – Living Dungeon Systems
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,7 +12,11 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.9.1 Living Dungeon Event Library**
+Current version: **0.9.2 Living Dungeon Systems**
+
+## v1.0 target
+
+The current target is **v1.0 Living Dungeon Director**. Factions are intentionally deprioritised. The focus is on systems that make the dungeon feel responsive: noise, hidden awareness, patrol-style movement, persistent state, and Director pacing.
 
 ## Run locally
 
@@ -39,7 +43,7 @@ http://localhost:8000
 - Central action dispatcher
 - State validator
 - 10-room exploration reference dungeon
-- Search, loot, clues, simple monsters, threat meter
+- Search, loot, clues, simple encounters, threat meter
 - Save/load using browser localStorage
 - Export/import save JSON
 - Player-safe rendering and placeholder image system
@@ -48,9 +52,13 @@ http://localhost:8000
 - Director action queue for future intent and pacing beats
 - Dynamic event queue for Director-scheduled dungeon events
 - Event history so resolved and expired events can be inspected in diagnostics
-- Deterministic event processing by trigger, including NEXT_ROOM_ENTER, NEXT_SEARCH, NEXT_SAFE_ACTION, NEXT_PLAYER_ACTION, and NEXT_FINALE
-- Living event library with Atmosphere, Tension, Discovery, and Response event categories
+- Deterministic event processing by trigger
+- Living event library with Atmosphere, Tension, Discovery, and Response categories
 - Deterministic unused-event selection to reduce repetition
+- Noise tracking for player actions
+- Hidden awareness state for mobile dungeon presence
+- Basic movement between connected rooms
+- Movement history visible in developer diagnostics
 - Structured clue metadata for treasure-hunt exploration
 - Clue Journal with clue titles, importance, tags, leads, and destination hints
 - Insight messages when discovered clues connect
@@ -72,6 +80,7 @@ src/
     actionQueue.js
     council.js
     eventQueue.js
+    livingDungeon.js
     personality.js
     rules.js
   state/
@@ -88,13 +97,13 @@ docs/
 tests/
 ```
 
+## Living dungeon principle
+
+The dungeon should feel like it remembers. Player actions create noise. Hidden systems track awareness and movement. The player sees only safe outputs, such as nearby movement or a presence entering the current room, while the hidden state remains available in diagnostics.
+
 ## Dynamic event principle
 
 The Dungeon Director schedules future events, but the deterministic rules engine decides when they resolve. A search might queue an atmosphere or tension event for the next room enter. Nothing happens immediately; when the correct trigger fires, the event resolves into a player-safe log entry and moves into event history.
-
-## Living dungeon principle
-
-The dungeon should feel like it remembers. Event history prevents constant repetition, while event categories let the Director pick beats that match the current pressure: quiet atmosphere, rising tension, subtle discovery, or a dungeon response.
 
 ## Explore mode principle
 
@@ -104,4 +113,4 @@ Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain vi
 
 The UI sends actions. The rules engine decides outcomes. The state store persists truth. The validator checks integrity. AI modules must only receive player-visible data.
 
-The hidden Dungeon Council and Dungeon Director may reason about pacing, clues, rewards, encounters, event scheduling, and visibility, but only player-safe results should appear in the play experience.
+The hidden Dungeon Council and Dungeon Director may reason about pacing, clues, rewards, encounters, event scheduling, noise, awareness, movement, and visibility, but only player-safe results should appear in the play experience.
