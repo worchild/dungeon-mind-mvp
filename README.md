@@ -1,4 +1,4 @@
-# Dungeon Mind v0.9.3 - Release Candidate Polish
+# Dungeon Mind v1.0.0 - Living Dungeon Director
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,11 +12,11 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.9.3 Release Candidate Polish**
+Current version: **1.0.0 Living Dungeon Director**
 
-## v1.0 target
+## v1.0 status
 
-The current target is **v1.0 Living Dungeon Director**. Factions are intentionally deprioritised. The focus is on release readiness: clear ritual progress, playtester-friendly UI, stable living dungeon behaviour, and hidden diagnostics for development.
+This is the first locked playable release. Factions are intentionally deprioritised for later v1.x work. The focus is treasure-hunt exploration, player-safe presentation, hidden Director systems, dynamic dungeon events, ritual progress, and basic living dungeon behaviour.
 
 ## Run locally
 
@@ -98,10 +98,6 @@ images/
 docs/
 tests/
 ```
-
-## Release candidate principle
-
-The v0.9.3 goal is not to add a large new system. It is to make the current game readable, testable, and ready to promote to v1.0 after a clean playthrough.
 
 ## Living dungeon principle
 
