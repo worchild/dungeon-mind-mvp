@@ -1,6 +1,6 @@
 export const SCHEMA_VERSION = "1.0";
-export const APP_VERSION = "0.9.3";
-export const STORAGE_KEY = "dungeonMindMvpSaveV093";
+export const APP_VERSION = "1.0.0";
+export const STORAGE_KEY = "dungeonMindMvpSaveV100";
 
 let state = null;
 let clueBook = {};
@@ -15,7 +15,7 @@ export async function loadDungeonContent(path = "./data/dungeon.json") {
 }
 
 export function getState() { return state; }
-export function setState(nextState) { state = nextState; return state; }
+export function setState(nextState) { state = nextState; }
 export function getClueBook() { return clueBook; }
 export function cloneInitialStateFromContent(content) { return structuredClone(content.initialState); }
 
