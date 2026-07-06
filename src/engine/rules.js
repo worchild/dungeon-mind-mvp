@@ -1,8 +1,9 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent, getClueBook } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.9.1";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.9.1";
-import { ensureEventState, eventTriggersForAction, processEventQueue, scheduleDirectorEvents } from "./eventQueue.js?v=0.9.1";
+import { consultCouncil } from "./council.js?v=0.9.2";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.9.2";
+import { ensureEventState, eventTriggersForAction, processEventQueue, scheduleDirectorEvents } from "./eventQueue.js?v=0.9.2";
+import { ensureLivingDungeonState, processLivingDungeon } from "./livingDungeon.js?v=0.9.2";
 
 let initialContent = null;
 
@@ -56,10 +57,11 @@ const ITEM_ACTIONS = {
 };
 
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json?v=0.9.1").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json?v=0.9.1");
+  initialContent = await fetch("./data/dungeon.json?v=0.9.2").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=0.9.2");
   ensureDungeonMindState(getState());
   ensureEventState(getState());
+  ensureLivingDungeonState(getState());
   ensureExploreState(getState());
   return getState();
 }
@@ -127,16 +129,13 @@ function addClue(clueId) {
 function addInsightForClue(clueId) {
   const state = getState();
   ensureExploreState(state);
-
   const newClue = clueDetails(clueId);
   const previousClues = state.player.clues.filter(id => id !== clueId).map(clueDetails);
   const sharedTags = [...new Set(previousClues.flatMap(clue =>
     (clue.tags || []).filter(tag => (newClue.tags || []).includes(tag)),
   ))];
-
   const requiredFound = state.objective.requiredClueIds.filter(id => state.player.clues.includes(id)).length;
   const requiredTotal = state.objective.requiredClueIds.length;
-
   const insightRules = [
     {
       id: "I-RITUAL-THREAD",
@@ -159,7 +158,6 @@ function addInsightForClue(clueId) {
       text: "Insight: you have the three core signs. The path to the Dawn Key should now be readable rather than forced.",
     },
   ];
-
   insightRules.forEach(rule => {
     if (!rule.when()) return;
     if (state.player.insights.some(insight => insight.id === rule.id)) return;
@@ -174,7 +172,6 @@ function checkObjective(byLoot = false) {
   const state = getState();
   const hasKey = state.player.inventory.some(item => item.id === "L05");
   const hasCoreClues = state.objective.requiredClueIds.every(id => state.player.clues.includes(id));
-
   if (hasKey && hasCoreClues && !state.objective.complete) {
     state.objective.complete = true;
     addLog("Objective complete: the Dawn Key is recovered with the correct seal knowledge.");
@@ -191,26 +188,21 @@ function inspectFeature(action) {
   const state = getState();
   const room = currentRoom();
   const feature = room.inspectables?.find(item => item.id === action.featureId);
-
   if (!feature) {
     addLog("You study the room, but nothing answers your attention. Rude architecture.");
     return;
   }
-
   const inspectionId = `${room.id}:${feature.id}`;
   if (state.player.inspectedFeatures.includes(inspectionId)) {
     addLog(feature.repeatText || `You have already inspected ${feature.label}.`);
     return;
   }
-
   state.player.inspectedFeatures.push(inspectionId);
   feature.done = true;
   addLog(feature.text);
-
   if (feature.clueId && addClue(feature.clueId)) {
     addLog(`Clue discovered: ${clueDetails(feature.clueId).title}.`);
   }
-
   addThreat(feature.threat || 0, `inspected ${feature.label} in ${room.name}`);
 }
 
@@ -226,7 +218,6 @@ function inspectItem(action) {
     addLog("You rummage for that item, but your pack refuses to produce it.");
     return;
   }
-
   const text = ITEM_ACTIONS[item.id]?.inspect || `${item.name}: ${item.text}`;
   const firstInspection = !state.player.inspectedItems.includes(item.id);
   if (firstInspection) state.player.inspectedItems.push(item.id);
@@ -241,14 +232,11 @@ function useItem(action) {
     addLog("You cannot use an item you do not have. Very unfair, but traditional.");
     return;
   }
-
   const handler = ITEM_ACTIONS[item.id]?.use;
   const result = typeof handler === "function"
     ? handler({ state, room, item })
     : "You try using the item, but the dungeon offers no meaningful response.";
-
   addLog(result);
-
   const useId = `${item.id}:${room.id}`;
   if (!state.player.usedItems.includes(useId)) state.player.usedItems.push(useId);
 }
@@ -269,9 +257,9 @@ function processRelevantQueueTriggers(action, state) {
 export function dispatch(action) {
   const state = getState();
   if (!state) return { ok: false, errors: ["Game has not initialised."], councilResult: null };
-
   ensureDungeonMindState(state);
   ensureEventState(state);
+  ensureLivingDungeonState(state);
   ensureExploreState(state);
 
   switch (action.type) {
@@ -329,6 +317,7 @@ export function dispatch(action) {
         if (loaded) {
           ensureDungeonMindState(loaded);
           ensureEventState(loaded);
+          ensureLivingDungeonState(loaded);
           ensureExploreState(loaded);
         }
         addLog(loaded ? "Game loaded from local save." : "No local save found.");
@@ -341,6 +330,7 @@ export function dispatch(action) {
       else {
         ensureDungeonMindState(action.state);
         ensureEventState(action.state);
+        ensureLivingDungeonState(action.state);
         ensureExploreState(action.state);
         setState(action.state);
         addLog("Imported save loaded.");
@@ -351,6 +341,7 @@ export function dispatch(action) {
       setState(structuredClone(initialContent.initialState));
       ensureDungeonMindState(getState());
       ensureEventState(getState());
+      ensureLivingDungeonState(getState());
       ensureExploreState(getState());
       break;
     }
@@ -360,11 +351,13 @@ export function dispatch(action) {
   const finalState = getState();
   ensureDungeonMindState(finalState);
   ensureEventState(finalState);
+  ensureLivingDungeonState(finalState);
   ensureExploreState(finalState);
 
   const resolvedActions = processRelevantQueueTriggers(action, finalState);
   const eventTriggers = eventTriggersForAction(action, finalState);
   const resolvedEvents = processEventQueue(eventTriggers, finalState);
+  const livingDungeonResult = processLivingDungeon(action, finalState);
   const errors = validateState(finalState);
   const councilResult = consultCouncil(action, finalState, errors);
   const enqueuedActions = enqueueDirectorActions(finalState, councilResult.actionQueue);
@@ -379,8 +372,8 @@ export function dispatch(action) {
   councilResult.enqueuedEvents = enqueuedEvents;
   councilResult.persistedEventQueue = finalState.dungeonMind.eventQueue;
   councilResult.eventHistory = finalState.dungeonMind.eventHistory;
+  councilResult.livingDungeon = livingDungeonResult;
 
   console.log("Dungeon Mind Internal Reasoning", councilResult);
-
   return { ok: errors.length === 0, errors, state: finalState, councilResult };
 }
