@@ -7,6 +7,13 @@ export function ensureDungeonMindState(state) {
       eventQueue: [],
       eventHistory: [],
       eventCounter: 0,
+      livingDungeon: {
+        turn: 0,
+        noiseLog: [],
+        awareness: {},
+        patrols: {},
+        patrolHistory: [],
+      },
     };
   }
 
@@ -16,6 +23,15 @@ export function ensureDungeonMindState(state) {
   if (!Array.isArray(state.dungeonMind.eventQueue)) state.dungeonMind.eventQueue = [];
   if (!Array.isArray(state.dungeonMind.eventHistory)) state.dungeonMind.eventHistory = [];
   if (typeof state.dungeonMind.eventCounter !== "number") state.dungeonMind.eventCounter = 0;
+  if (!state.dungeonMind.livingDungeon) {
+    state.dungeonMind.livingDungeon = {
+      turn: 0,
+      noiseLog: [],
+      awareness: {},
+      patrols: {},
+      patrolHistory: [],
+    };
+  }
 
   return state.dungeonMind;
 }
