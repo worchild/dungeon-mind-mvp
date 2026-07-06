@@ -1,6 +1,6 @@
-import { initialiseGame, dispatch } from "./engine/rules.js?v=0.9.3";
-import { getState } from "./state/store.js?v=0.9.3";
-import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.9.3";
+import { initialiseGame, dispatch } from "./engine/rules.js?v=1.0.0";
+import { getState } from "./state/store.js?v=1.0.0";
+import { render, renderCouncilDebug } from "./ui/renderer.js?v=1.0.0";
 
 let latestCouncilResult = null;
 
@@ -15,7 +15,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(getState(), null, 2)], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "dungeon-mind-save-v0.9.3.json";
+  link.download = "dungeon-mind-save-v1.0.0.json";
   link.click();
   URL.revokeObjectURL(link.href);
 }
