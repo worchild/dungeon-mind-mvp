@@ -1,4 +1,4 @@
-# Dungeon Mind v0.9.0 – Dynamic Event Queue
+# Dungeon Mind v0.9.1 – Living Dungeon Event Library
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,7 +12,7 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.9.0 Dynamic Event Queue**
+Current version: **0.9.1 Living Dungeon Event Library**
 
 ## Run locally
 
@@ -49,6 +49,8 @@ http://localhost:8000
 - Dynamic event queue for Director-scheduled dungeon events
 - Event history so resolved and expired events can be inspected in diagnostics
 - Deterministic event processing by trigger, including NEXT_ROOM_ENTER, NEXT_SEARCH, NEXT_SAFE_ACTION, NEXT_PLAYER_ACTION, and NEXT_FINALE
+- Living event library with Atmosphere, Tension, Discovery, and Response event categories
+- Deterministic unused-event selection to reduce repetition
 - Structured clue metadata for treasure-hunt exploration
 - Clue Journal with clue titles, importance, tags, leads, and destination hints
 - Insight messages when discovered clues connect
@@ -88,7 +90,11 @@ tests/
 
 ## Dynamic event principle
 
-The Dungeon Director schedules future events, but the deterministic rules engine decides when they resolve. A search might queue distant footsteps for the next room enter. Nothing happens immediately; when the player moves, the event resolves into a player-safe log entry and moves into event history.
+The Dungeon Director schedules future events, but the deterministic rules engine decides when they resolve. A search might queue an atmosphere or tension event for the next room enter. Nothing happens immediately; when the correct trigger fires, the event resolves into a player-safe log entry and moves into event history.
+
+## Living dungeon principle
+
+The dungeon should feel like it remembers. Event history prevents constant repetition, while event categories let the Director pick beats that match the current pressure: quiet atmosphere, rising tension, subtle discovery, or a dungeon response.
 
 ## Explore mode principle
 
