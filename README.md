@@ -1,4 +1,4 @@
-# Dungeon Mind v0.8.2 – Actionable Inventory
+# Dungeon Mind v0.9.0 – Dynamic Event Queue
 
 Dungeon Mind is a browser-based dungeon exploration engine. The rules engine owns mechanics, the Dungeon Mind state owns truth, and the UI only renders player-safe state.
 
@@ -12,7 +12,7 @@ https://worchild.github.io/dungeon-mind-mvp/
 
 ## Version
 
-Current version: **0.8.2 Actionable Inventory**
+Current version: **0.9.0 Dynamic Event Queue**
 
 ## Run locally
 
@@ -46,6 +46,9 @@ http://localhost:8000
 - Dungeon Council diagnostics model
 - Dungeon personality profile that biases Council priorities
 - Director action queue for future intent and pacing beats
+- Dynamic event queue for Director-scheduled dungeon events
+- Event history so resolved and expired events can be inspected in diagnostics
+- Deterministic event processing by trigger, including NEXT_ROOM_ENTER, NEXT_SEARCH, NEXT_SAFE_ACTION, NEXT_PLAYER_ACTION, and NEXT_FINALE
 - Structured clue metadata for treasure-hunt exploration
 - Clue Journal with clue titles, importance, tags, leads, and destination hints
 - Insight messages when discovered clues connect
@@ -66,6 +69,7 @@ src/
   engine/
     actionQueue.js
     council.js
+    eventQueue.js
     personality.js
     rules.js
   state/
@@ -82,6 +86,10 @@ docs/
 tests/
 ```
 
+## Dynamic event principle
+
+The Dungeon Director schedules future events, but the deterministic rules engine decides when they resolve. A search might queue distant footsteps for the next room enter. Nothing happens immediately; when the player moves, the event resolves into a player-safe log entry and moves into event history.
+
 ## Explore mode principle
 
 Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain visible features, inspectable details reveal clues or flavour, items can be inspected or used in context, clues point toward other rooms or ritual ideas, and the journal helps the player connect discoveries without leaking hidden Dungeon Mind data.
@@ -90,4 +98,4 @@ Explore Mode should feel like a treasure hunt, not a checklist. Rooms contain vi
 
 The UI sends actions. The rules engine decides outcomes. The state store persists truth. The validator checks integrity. AI modules must only receive player-visible data.
 
-The hidden Dungeon Council may reason about pacing, clues, rewards, encounters, and visibility, but only player-safe results should appear in the play experience.
+The hidden Dungeon Council and Dungeon Director may reason about pacing, clues, rewards, encounters, event scheduling, and visibility, but only player-safe results should appear in the play experience.
