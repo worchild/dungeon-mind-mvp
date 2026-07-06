@@ -1,9 +1,9 @@
 import { getState, setState, saveState, loadSavedState, loadDungeonContent, getClueBook } from "../state/store.js";
 import { validateState } from "../validation/validator.js";
-import { consultCouncil } from "./council.js?v=0.9.2";
-import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=0.9.2";
-import { ensureEventState, eventTriggersForAction, processEventQueue, scheduleDirectorEvents } from "./eventQueue.js?v=0.9.2";
-import { ensureLivingDungeonState, processLivingDungeon } from "./livingDungeon.js?v=0.9.2";
+import { consultCouncil } from "./council.js?v=1.0.0";
+import { ensureDungeonMindState, enqueueDirectorActions, processActionQueue } from "./actionQueue.js?v=1.0.0";
+import { ensureEventState, eventTriggersForAction, processEventQueue, scheduleDirectorEvents } from "./eventQueue.js?v=1.0.0";
+import { ensureLivingDungeonState, processLivingDungeon } from "./livingDungeon.js?v=1.0.0";
 
 let initialContent = null;
 
@@ -57,8 +57,8 @@ const ITEM_ACTIONS = {
 };
 
 export async function initialiseGame() {
-  initialContent = await fetch("./data/dungeon.json?v=0.9.2").then(r => r.json());
-  await loadDungeonContent("./data/dungeon.json?v=0.9.2");
+  initialContent = await fetch("./data/dungeon.json?v=1.0.0").then(r => r.json());
+  await loadDungeonContent("./data/dungeon.json?v=1.0.0");
   ensureDungeonMindState(getState());
   ensureEventState(getState());
   ensureLivingDungeonState(getState());
@@ -353,7 +353,6 @@ export function dispatch(action) {
   ensureEventState(finalState);
   ensureLivingDungeonState(finalState);
   ensureExploreState(finalState);
-
   const resolvedActions = processRelevantQueueTriggers(action, finalState);
   const eventTriggers = eventTriggersForAction(action, finalState);
   const resolvedEvents = processEventQueue(eventTriggers, finalState);
