@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dungeon Mind v0.8.2 - Actionable Inventory</title>
-    <link rel="stylesheet" href="style.css?v=0.8.2" />
-    <script type="module" src="./src/app-v070.js?v=0.8.2"></script>
+    <title>Dungeon Mind v0.9.0 - Dynamic Event Queue</title>
+    <link rel="stylesheet" href="style.css?v=0.9.0" />
+    <script type="module" src="./src/app-v070.js?v=0.9.0"></script>
   </head>
   <body>
     <header>
-      <h1>Dungeon Mind v0.8.2</h1>
+      <h1>Dungeon Mind v0.9.0</h1>
       <div class="subtitle">
-        Actionable inventory · inspectable features · treasure hunt explore mode · clue journal · insight links
+        Dynamic event queue · Director scheduling · actionable inventory · inspectable treasure hunt exploration
       </div>
     </header>
 
@@ -69,8 +69,8 @@
 
       <section id="debug-panel" class="card debug-card">
         <h2>Dungeon Mind — Developer Diagnostics</h2>
-        <p class="small">Developer-only view. Scroll here after player actions to inspect personality profile, Council recommendations, Director decisions, queued future intents, and resolved queue actions.</p>
-        <pre id="council-debug-output">Diagnostics panel loaded. Take an action to generate the first Director decision and queued intent.</pre>
+        <p class="small">Developer-only view. Scroll here after player actions to inspect Council output, action queue, event queue, event history, and resolved dynamic events.</p>
+        <pre id="council-debug-output">Diagnostics panel loaded. Take an action to generate Director decisions, queued intents, and scheduled dungeon events.</pre>
       </section>
     </main>
   </body>
