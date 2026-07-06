@@ -4,12 +4,18 @@ export function ensureDungeonMindState(state) {
       actionQueue: [],
       resolvedActions: [],
       queueCounter: 0,
+      eventQueue: [],
+      eventHistory: [],
+      eventCounter: 0,
     };
   }
 
   if (!Array.isArray(state.dungeonMind.actionQueue)) state.dungeonMind.actionQueue = [];
   if (!Array.isArray(state.dungeonMind.resolvedActions)) state.dungeonMind.resolvedActions = [];
   if (typeof state.dungeonMind.queueCounter !== "number") state.dungeonMind.queueCounter = 0;
+  if (!Array.isArray(state.dungeonMind.eventQueue)) state.dungeonMind.eventQueue = [];
+  if (!Array.isArray(state.dungeonMind.eventHistory)) state.dungeonMind.eventHistory = [];
+  if (typeof state.dungeonMind.eventCounter !== "number") state.dungeonMind.eventCounter = 0;
 
   return state.dungeonMind;
 }
