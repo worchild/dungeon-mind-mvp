@@ -1,18 +1,21 @@
-import { initialiseGame, dispatch } from "./engine/rules.js?v=0.9.2";
-import { getState } from "./state/store.js?v=0.9.2";
-import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.9.2";
+import { initialiseGame, dispatch } from "./engine/rules.js?v=0.9.3";
+import { getState } from "./state/store.js?v=0.9.3";
+import { render, renderCouncilDebug } from "./ui/renderer.js?v=0.9.3";
+
+let latestCouncilResult = null;
 
 function run(action) {
   const result = dispatch(action);
+  latestCouncilResult = result?.councilResult || null;
   render();
-  renderCouncilDebug(result?.councilResult);
+  renderCouncilDebug(latestCouncilResult);
 }
 
 function exportSave() {
   const blob = new Blob([JSON.stringify(getState(), null, 2)], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "dungeon-mind-save-v0.9.2.json";
+  link.download = "dungeon-mind-save-v0.9.3.json";
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -31,6 +34,16 @@ function importSave(event) {
   reader.readAsText(file);
 }
 
+function toggleDevTools() {
+  const panel = document.getElementById("debug-panel");
+  const button = document.getElementById("devToolsBtn");
+  if (!panel || !button) return;
+
+  panel.hidden = !panel.hidden;
+  button.textContent = panel.hidden ? "Show Dev Tools" : "Hide Dev Tools";
+  if (!panel.hidden) renderCouncilDebug(latestCouncilResult);
+}
+
 function wireEvents() {
   document.body.addEventListener("click", event => {
     const button = event.target.closest("button[data-action]");
@@ -47,6 +60,7 @@ function wireEvents() {
   document.getElementById("loadBtn").addEventListener("click", () => run({ type: "LOAD" }));
   document.getElementById("exportBtn").addEventListener("click", exportSave);
   document.getElementById("importFile").addEventListener("change", importSave);
+  document.getElementById("devToolsBtn").addEventListener("click", toggleDevTools);
   document.getElementById("resetBtn").addEventListener("click", () => {
     if (confirm("Reset the dungeon demo?")) run({ type: "RESET" });
   });
